@@ -3,7 +3,7 @@ import json
 from pymongo import MongoClient
 
 class FHelper(object):
-    def __init__(self, filename=r'd:\temp\test.txt'):
+    def __init__(self, filename=r'd:\temp\test.html'):
         self.fname = filename
 
     def SaveDict(self,dictObj):

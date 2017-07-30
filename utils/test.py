@@ -1,12 +1,11 @@
 #coding=utf-8
-import mghelper
-import fhelper
 import time
-import itchat
-import itchatmp
-from tornado import gen
+
 from werobot import WeRoBot
-import tablib
+
+import confhelper
+import fhelper
+from pytest.pytest.utils.DB import sqlhelper
 
 if __name__ == '__main__':
     print time.ctime(), 'Start...'
@@ -44,7 +43,14 @@ if __name__ == '__main__':
     dictListObj = [dictObj,dictObj2]
     # endregion
     try:
-        mg = mghelper.MgHelper()
+        f = fhelper.FHelper(filename=r'd:\temp\test.csv')
+        f.GetAllLines()
+
+        conf = confhelper.ConfHelper(u'd:/TEMP/test.conf')
+        conf.GetAllConfig()
+        conf.GetSectionConfig('db')
+        print conf.GetConfig('db','host')
+        # mg = mghelper.MgHelper()
 
         #region tablib 应用
         #data = tablib.Dataset(*data, headers=headers)
@@ -70,6 +76,16 @@ if __name__ == '__main__':
         #mg.SaveFile( r'd:\temp\test.csv')  # 保存json文件到mongodb
         # mg.SaveRow(dictListObj)
         # itchat.auto_login(enableCmdQR=2)
+        #endregion
+
+        #region mssql应用
+        ## ms = MSSQL(host="localhost",user="sa",pwd="123456",db="PythonWeiboStatistics")
+        ## #返回的是一个包含tuple的list，list的元素是记录行，tuple的元素是每行记录的字段
+        ## ms.ExecNonQuery("insert into WeiBoUser values('2','3')")
+
+        ms = sqlhelper.SqlHelper(host=r"localhost\SQLEXPRESS", user="sa", pwd="pwd", db="dbname")
+        resList = ms.ExecQuery("SELECT * FROM test")
+
         #endregion
 
         # region itchat应用
@@ -111,6 +127,8 @@ if __name__ == '__main__':
         # itchatmp.run()
          # endregion应用
 
+
+
         #region werobot
         robot = WeRoBot(enable_session=False,
                         token='bUiy1ZwNDNBSIRIxOGPqpojOc9JIcfGRMAs8J1Ww9xyL6Z8nyz9cLdNDnSfuW-3x_Oy2E3ZGYARjo8QqHl-d29LFWFMyINWKX97-Rahc-Yny3g6CMBf3OQOC40lAJXUHVHCcABAGSN',
@@ -125,8 +143,8 @@ if __name__ == '__main__':
 
 
 
-    except Exception, e:
+    except Exception,e:
         print time.ctime(), 'Error!'
-        print e
+        print e.message
     finally:
         print time.ctime(), 'Done!'
