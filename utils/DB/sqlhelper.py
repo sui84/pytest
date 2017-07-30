@@ -3,6 +3,7 @@ import pymssql
 import pyodbc
 import pymysql
 
+
 class SqlHelper(object):
     def __init__(self,host,user,pwd,db,dbtype='mssql'):
         self.host = host
