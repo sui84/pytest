@@ -7,17 +7,29 @@ class ConfHelper(object):
         self.fname = filename
         self.config=ConfigParser.ConfigParser()
         self.config.read(self.fname)
+        self.confs = self.GetAllConfig()
 
     def GetAllConfig(self):
+        confs = {}
+        for section in self.config.sections():
+            for option in self.config.options(section):
+                confs[option] = self.config.get(section,option)
+        return confs
+    def ShowAllConfig(self):
         print self.config.sections()
+        confs = {}
         for section in self.config.sections():
             print section
             for option in self.config.options(section):
+                confs[option] = self.config.get(section,option)
                 print " ",option,"=",self.config.get(section,option)
+        return confs
     def GetSectionConfig(self,section):
+        confs={}
         for option in self.config.options(section):
               print " ",option,"=",self.config.get(section,option)
-        return self.config.options(section)
+              confs[option] = self.config.get(section,option)
+        return confs
     def GetConfig(self,section,option):
         return self.config.get(section,option)
     def UpdateConfig(self,section,option,optionvalue):
@@ -39,3 +51,5 @@ class ConfHelper(object):
             self.config.write(f)
             f.closed()
 
+if __name__ == '__main__':
+    print 'main'
