@@ -1,14 +1,20 @@
 #coding=utf-8
 import time
-
-from werobot import WeRoBot
-
+import traceback
+#from werobot import WeRoBot
 import confhelper
 import fhelper
-from pytest.pytest.utils.DB import sqlhelper
+import sys
+sys.path.append('DB/')
+import sqlhelper
+import confhelper
+import reqhelper
 
 if __name__ == '__main__':
     print time.ctime(), 'Start...'
+    # get config 
+    conf=confhelper.ConfHelper(r'd:\temp\test.conf')
+    confs=conf.GetAllConfig()
     # region Data
     ipTable = ['158.59.194.213', '18.9.14.13', '58.59.14.21']
     headers = ('area', 'user', 'recharge')
@@ -43,13 +49,13 @@ if __name__ == '__main__':
     dictListObj = [dictObj,dictObj2]
     # endregion
     try:
-        f = fhelper.FHelper(filename=r'd:\temp\test.csv')
-        f.GetAllLines()
+        print confs
+        req = reqhelper.ReqHelper()
+        req.TestUrls()
+        # f = fhelper.FHelper(filename=r'd:\temp\test.csv')
+        # f.GetAllLines()
 
-        conf = confhelper.ConfHelper(u'd:/TEMP/test.conf')
-        conf.GetAllConfig()
-        conf.GetSectionConfig('db')
-        print conf.GetConfig('db','host')
+
         # mg = mghelper.MgHelper()
 
         #region tablib 应用
@@ -83,8 +89,9 @@ if __name__ == '__main__':
         ## #返回的是一个包含tuple的list，list的元素是记录行，tuple的元素是每行记录的字段
         ## ms.ExecNonQuery("insert into WeiBoUser values('2','3')")
 
-        ms = sqlhelper.SqlHelper(host=r"localhost\SQLEXPRESS", user="sa", pwd="pwd", db="dbname")
-        resList = ms.ExecQuery("SELECT * FROM test")
+        # ms = sqlhelper.SqlHelper(host=confs["mssqlserver"], user=confs["mssqluser"], pwd=confs["mssqlpwd"], db=confs["testdb"],dbtype='mssql')
+        # resList = ms.ExecQuery("SELECT * FROM test")
+        # print resList
 
         #endregion
 
@@ -130,21 +137,20 @@ if __name__ == '__main__':
 
 
         #region werobot
-        robot = WeRoBot(enable_session=False,
-                        token='bUiy1ZwNDNBSIRIxOGPqpojOc9JIcfGRMAs8J1Ww9xyL6Z8nyz9cLdNDnSfuW-3x_Oy2E3ZGYARjo8QqHl-d29LFWFMyINWKX97-Rahc-Yny3g6CMBf3OQOC40lAJXUHVHCcABAGSN',
-                        APP_ID='wx675d68299018008f',
-                        APP_SECRET='5436fb3ceb9fa60cd9685fe70066305b')
+        # robot = WeRoBot(enable_session=False,
+                        # token='bUiy1ZwNDNBSIRIxOGPqpojOc9JIcfGRMAs8J1Ww9xyL6Z8nyz9cLdNDnSfuW-3x_Oy2E3ZGYARjo8QqHl-d29LFWFMyINWKX97-Rahc-Yny3g6CMBf3OQOC40lAJXUHVHCcABAGSN',
+                        # APP_ID='wx675d68299018008f',
+                        # APP_SECRET='5436fb3ceb9fa60cd9685fe70066305b')
 
-        @robot.handler
-        def hello(message):
-            return 'Hello world'
-        robot.run()
+        # @robot.handler
+        # def hello(message):
+            # return 'Hello world'
+        # robot.run()
         #endregion
 
 
 
     except Exception,e:
-        print time.ctime(), 'Error!'
-        print e.message
+        print time.ctime(), 'Error:',e.message,'\n',traceback.format_exc()
     finally:
         print time.ctime(), 'Done!'
