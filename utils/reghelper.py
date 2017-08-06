@@ -9,8 +9,13 @@ http://www.cnblogs.com/deerchao/archive/2006/08/24/zhengzhe30fengzhongjiaocheng.
 + >=1
 * >=0
 ? 0 or 1
+~ 字符串开始位置
+$ 字符串结束位置
 {m} m次
 {m,n} between m and n
+.?的意思是尽可能少的匹配
+.*具有贪婪的性质，首先匹配到不能匹配为止，根据后面的正则表达式，会进行回溯。
+.*？则相反，一个匹配以后，就往下进行，所以不会进行回溯，具有最小匹配的性质。
 '''
 
 
@@ -44,3 +49,8 @@ class RegHelper(object):
             print 'nothing'
         return result
 
+    def GetAllMatch(self,str,regstr):
+        # regstr = 'aaaa(.*?)bbbb'
+        pattern=re.compile(regstr)
+        items=re.findall(pattern,str)
+        return items

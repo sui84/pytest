@@ -9,6 +9,7 @@ sys.path.append('DB/')
 import sqlhelper
 import confhelper
 import reqhelper
+import wchelper
 
 if __name__ == '__main__':
     print time.ctime(), 'Start...'
@@ -50,8 +51,12 @@ if __name__ == '__main__':
     # endregion
     try:
         print confs
+        wc = wchelper.WCHelper(bgimage=r"D:\temp\test.png", ttfpath=r"simfang.ttf",inputfile=r"d:\temp\test.txt", outimage=r"d:\temp\test.jpg")
+        wc.GenerateCloud()
         req = reqhelper.ReqHelper()
-        req.TestUrls()
+        #req.DownloadUrlFiles(func=lambda x:x['href'].endswith('.ipk'),url="",dp="")
+        #req.DownloadUrlFiles(None)
+        #req.TestUrls()
         # f = fhelper.FHelper(filename=r'd:\temp\test.csv')
         # f.GetAllLines()
 
