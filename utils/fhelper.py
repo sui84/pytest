@@ -15,15 +15,30 @@ r+ 打开文件会保持原文件内容不变，同样可以同时对文件进�
 class FHelper(object):
     def __init__(self, filename=r'd:\temp\test.txt'):
         self.fname = filename
-
+        
+    def GetFileContent(self):
+        f = open(self.fname) 
+        txt = f.read()
+        f.close()
+        return txt
+        
+        
     def GetAllLines(self):
         f = file(self.fname,'rb')
-        return f.readlines()
+        data = f.readlines()
+        f.close()
+        return data
+        
     def SaveLine(self,line):
+        '''
         f = file(self.fname,'w') #直接清空，不能用f.readline()
         f.write(line)
         #f.flush() #立刻写进去
         f.close() #写进IO
+        '''
+        #no need cloase with below
+        with open(self.fname, 'w') as f:
+            f.write(result)
     def SaveDict(self,dictObj):
         jsObj = json.dumps(dictObj)
         fileObject = open(self.fname, 'w')
