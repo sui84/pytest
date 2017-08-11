@@ -1,6 +1,7 @@
 #encoding=utf-8
 import ConfigParser
 import string
+import ast
 
 class ConfHelper(object):
     def __init__(self, filename=r'd:\temp\test.conf'):
@@ -32,6 +33,9 @@ class ConfHelper(object):
         return confs
     def GetConfig(self,section,option):
         return self.config.get(section,option)
+    def GetListobjConfig(self,section,option):
+        listobj=ast.literal_eval(self.config.get(section,option))
+        return listobj
     def UpdateConfig(self,section,option,optionvalue):
         if not(self.config.has_section(section)):
             self.config.add_section(section)
