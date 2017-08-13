@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b6128f01-d478-48df-b23a-7b0160cb5dc5" name="Default" comment="check in">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/utils/fhelper.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/utils/httphelper.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/test.conf" afterPath="$PROJECT_DIR$/conf/test.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils/confhelper.py" afterPath="$PROJECT_DIR$/utils/confhelper.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils/reqhelper.py" afterPath="$PROJECT_DIR$/utils/reqhelper.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils/timehelper.py" afterPath="$PROJECT_DIR$/utils/timehelper.py" />
-    </list>
+    <list default="true" id="b6128f01-d478-48df-b23a-7b0160cb5dc5" name="Default" comment="check in" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,21 +31,6 @@
             <state relative-caret-position="350">
               <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gzhelper.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/gzhelper.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="38" column="18" lean-forward="false" selection-start-line="38" selection-start-column="18" selection-end-line="38" selection-end-column="18" />
-              <folding>
-                <marker date="1502600927192" expanded="true" signature="42:3367" ph="..." />
-                <marker date="1502600927192" expanded="true" signature="2229:3367" ph="..." />
-                <marker date="1502600927192" expanded="true" signature="2729:3345" ph="..." />
-                <marker date="1502600927192" expanded="true" signature="2825:3345" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -808,12 +784,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="393">
           <caret line="38" column="18" lean-forward="false" selection-start-line="38" selection-start-column="18" selection-end-line="38" selection-end-column="18" />
-          <folding>
-            <marker date="1502600927192" expanded="true" signature="42:3367" ph="..." />
-            <marker date="1502600927192" expanded="true" signature="2229:3367" ph="..." />
-            <marker date="1502600927192" expanded="true" signature="2729:3345" ph="..." />
-            <marker date="1502600927192" expanded="true" signature="2825:3345" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # coding=utf-8
 
 from time import time
@@ -31,6 +32,8 @@ if __name__ == '__main__':
 
     test(1,2)
 =======
+=======
+>>>>>>> 2db15582439f227e04a2e4d0a17b77fe8ead2583
 #encoding=utf-8
 import functools
 import logging
@@ -91,4 +94,7 @@ def zero_divide(i,j):
 if __name__ == '__main__':
     #zero_divide(1,0)
     zero_divide(1,1)
+<<<<<<< HEAD
+>>>>>>> 2db15582439f227e04a2e4d0a17b77fe8ead2583
+=======
 >>>>>>> 2db15582439f227e04a2e4d0a17b77fe8ead2583
