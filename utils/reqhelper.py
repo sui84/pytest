@@ -12,9 +12,9 @@ import threadpool
 
 class ReqHelper(object):
     def __init__(self, url=r'http://www.baidu.com',headers={}, outfile=r'd:\temp\log.txt',proxies={},timeout=3):
-        path=r'd:\temp\test.conf'
-        if os.path.exists(path):
-            self.conf=confhelper.ConfHelper(path)
+        self.confile = r"..\conf\test.conf"
+        if os.path.exists(self.confile):
+            self.conf=confhelper.ConfHelper(self.confile)
             self.confs = self.conf.GetAllConfig()
         if not(url.startswith('http://')) and not(url.startswith('https://')):
             url = 'http://'+url
