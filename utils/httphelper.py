@@ -4,6 +4,8 @@ import fhelper
 import confhelper
 import commonhelper
 import loghelper
+import xmlhelper
+import time
 
 
 logger = loghelper.create_logger()
@@ -79,16 +81,30 @@ if __name__ == '__main__':
     http=HttpHelper()
     #result=http.GetResponse(host)
     conf=confhelper.ConfHelper()
+    x=xmlhelper.XmlHelper()
     confs = conf.GetSectionConfig("soaphttp")
     host=confs["soaphost"]
     url=confs["soapurl"]
     reqs = conf.GetListobjConfig("soaphttp","reqxml")
     ns = confs["namespace"]
+    #output xml file
     outxmldir=confs["outxmldir"]
     for req in reqs:
         action = req["action"]
         reqpath = req["reqpath"]
+        #replace xml item value
+        valuedicts = conf.StrToDictList(req["valuedicts"])
+        x.SetTagValues(reqpath,valuedicts)
         soapaction=commonhelper.GetFullUrl(ns,action)
         outfpath=commonhelper.GetDstPath(outxmldir,reqpath)
         http.CallWebService(host,url,soapaction,reqpath,outfpath)
+        #output to PDF file
+        if req.has_key("filetag"):
+            tagname = req["filetag"]
+            bytestr = x.GetTagValue(outfpath,tagname)
+            fname = action + time.strftime("%y%m%d%H%M%S") +'.PDF'
+            ofpath = commonhelper.GetDstPath(outxmldir,fname)
+            f = fhelper.FHelper(ofpath)
+            f.SaveByteStrToFile(bytestr)
+
 
