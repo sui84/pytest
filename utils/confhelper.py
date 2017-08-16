@@ -33,9 +33,16 @@ class ConfHelper(object):
         return confs
     def GetConfig(self,section,option):
         return self.config.get(section,option)
-    def GetListobjConfig(self,section,option):
-        listobj=ast.literal_eval(self.config.get(section,option))
+        
+    def StrToDictList(self,str):
+        listobj = ast.literal_eval(str)
         return listobj
+        
+    def GetListobjConfig(self,section,option):
+        str = self.config.get(section,option)
+        listobj = self.StrToDictList(str)
+        return listobj
+        
     def UpdateConfig(self,section,option,optionvalue):
         if not(self.config.has_section(section)):
             self.config.add_section(section)
