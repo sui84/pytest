@@ -1,39 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# coding=utf-8
-
-from time import time
-def logged(when):
-    def log(f,*args,**kargs):
-        print("called: function:%s,args:%r,kargs:%r"%(f,args,kargs))
-    def pre_logged(f):
-        def wrapper(*args,**kargs):
-            log(f,*args,**kargs)
-            return f(*args,**kargs)
-    def post_logged(f):
-        def wrapped(*args,**kargs):
-            now=time()
-            try:
-                return f(*args,**kargs)
-            finally:
-                log(f,*args,**kargs)
-                print("time delta:%s"%(time()-now))
-        return wrapped
-    try:
-        #从这里开始调用
-        return{"pre":pre_logged,"post":post_logged}[when]
-    except Exception as e:
-        print(e)
-
-if __name__ == '__main__':
-    @logged("post")
-    def test(a,b=1):
-        print(a+b)
-
-    test(1,2)
-=======
-=======
->>>>>>> 2db15582439f227e04a2e4d0a17b77fe8ead2583
 #encoding=utf-8
 import functools
 import logging
@@ -94,7 +58,3 @@ def zero_divide(i,j):
 if __name__ == '__main__':
     #zero_divide(1,0)
     zero_divide(1,1)
-<<<<<<< HEAD
->>>>>>> 2db15582439f227e04a2e4d0a17b77fe8ead2583
-=======
->>>>>>> 2db15582439f227e04a2e4d0a17b77fe8ead2583
