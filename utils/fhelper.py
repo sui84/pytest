@@ -2,6 +2,7 @@
 import json
 import tablib
 from pymongo import MongoClient
+import base64
 '''
 r 只读
 w
@@ -15,7 +16,7 @@ r+ 打开文件会保持原文件内容不变，同样可以同时对文件进�
 class FHelper(object):
     def __init__(self, filename=r'd:\temp\test.txt'):
         self.fname = filename
-        
+
     def GetFileContent(self):
         f = open(self.fname) 
         txt = f.read()
@@ -29,7 +30,7 @@ class FHelper(object):
         f.close()
         return data
         
-    def SaveLine(self,line):
+    def SaveFileContent(self,content):
         '''
         f = file(self.fname,'w') #直接清空，不能用f.readline()
         f.write(line)
@@ -38,7 +39,13 @@ class FHelper(object):
         '''
         #no need cloase with below
         with open(self.fname, 'w') as f:
-            f.write(result)
+            f.write(content)
+            
+    def SaveByteStrToFile(self,bytestr):
+        binstr = base64.b64decode(bytestr)
+        with open(self.fname,'wb') as f:
+            f.write(binstr)
+            
     def SaveDict(self,dictObj):
         jsObj = json.dumps(dictObj)
         fileObject = open(self.fname, 'w')
@@ -75,22 +82,22 @@ class FHelper(object):
                 if types[typeIndex].upper()=='json'.upper():
                     fileObject.write(data.json)
                 if types[typeIndex].upper()=='xls'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.xls)
                 if types[typeIndex].upper()=='yaml'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.yaml)
                 if types[typeIndex].upper()=='csv'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.csv)
                 if types[typeIndex].upper()=='dbf'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.dbf)
                 if types[typeIndex].upper()=='tsv'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.tsv)
                 if types[typeIndex].upper()=='html'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.html)
                 if types[typeIndex].upper()=='latex'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.latex)
                 if types[typeIndex].upper()=='xlsx'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.xlsx)
                 if types[typeIndex].upper()=='ods'.upper():
-                    fileObject.write(data.json)
+                    fileObject.write(data.ods)
                 fileObject.close()
 
