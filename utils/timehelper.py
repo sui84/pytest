@@ -1,5 +1,6 @@
 #encoding=utf-8
 import time
+import datetime
 '''
 time.time()
 time.localtime()
@@ -14,6 +15,10 @@ class TimeHelper(object):
 
     def GetCurrentTimeStr(self, fmt='%Y/%m/%d %H:%M:%S'):
         return time.strftime(fmt)
+
+    def AddDate(self,days=0,hours=0,mins=0):
+        d = datetime.datetime.now()+datetime.timedelta(days=days,hours=hours,minutes=mins)
+        return d
 
 def elapsedtimedeco(arg=True):
     if arg:

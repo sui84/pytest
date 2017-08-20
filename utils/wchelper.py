@@ -75,3 +75,7 @@ class WCHelper(object):
         # 保存词云
         wc.to_file(self.outimage)
         print '生成图片 ：',self.bgimage
+
+if __name__ == '__main__':
+    wc = WCHelper(bgimage=r"D:\temp\test.png", ttfpath=r"simfang.ttf",inputfile=r"d:\temp\test.txt", outimage=r"d:\temp\test.jpg")
+    wc.GenerateCloud()

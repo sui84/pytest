@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+# Created on 2017-08-17 23:14:29
+# Project: test
+
+from pyspider.libs.base_handler import *
+from pyquery import PyQuery as pq
+
+
+class Handler(BaseHandler):
+    crawl_config = {
+    }
+
+    @every(minutes=24 * 60)
+    def on_start(self):
+        d=pq(url='http://www.sobaidupan.com')
+        so_md5key = d('[name="so_md5key"]').val()
+        keyword = "pyspider"
+        url="http://www.sobaidupan.com/search.asp?wd=%s&so_md5key=%s" % (keyword,so_md5key)
+        d=pq(url=url)
+        resultes=d('.search_box_list_bt a')
+        cnt = d('.search_box_list_bt a').length
+        urls = []
+        for i in range(0,cnt):
+            result = d('.search_box_list_bt a')
+            href = result.eq(i).attr('href')
+            name = result.eq(i).text()
+            print href,name
+            urls.append({"name":name,"href":href})
+            self.crawl(href, callback=self.index_page)
+
+    @config(age=10 * 24 * 60 * 60)
+    def index_page(self, response):
+        bdurl=response.doc('.pan_down > a').attr('href')
+        self.crawl(bdurl, callback=self.detail_page)
+
+    @config(priority=2)
+    def detail_page(self, response):
+        return {
+            "url": response.url,
+            "title": response.doc('title').text(),
+        }

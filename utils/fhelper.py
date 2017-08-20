@@ -18,6 +18,7 @@ class FHelper(object):
         self.fname = filename
 
     def GetFileContent(self):
+        '''获取文件内容字符串'''
         f = open(self.fname) 
         txt = f.read()
         f.close()
@@ -25,6 +26,7 @@ class FHelper(object):
         
         
     def GetAllLines(self):
+        '''获取文件行数组'''
         f = file(self.fname,'rb')
         data = f.readlines()
         f.close()
@@ -42,16 +44,19 @@ class FHelper(object):
             f.write(content)
             
     def SaveByteStrToFile(self,bytestr):
+        '''将字节字符串转成文件'''
         binstr = base64.b64decode(bytestr)
         with open(self.fname,'wb') as f:
             f.write(binstr)
             
     def SaveDict(self,dictObj):
+        '''保存字典内容成json文件'''
         jsObj = json.dumps(dictObj)
         fileObject = open(self.fname, 'w')
         fileObject.write(jsObj)
         fileObject.close()
     def SaveDictList(self,dictListObj):
+        '''保存字典数组成各种格式'json', 'xls', 'yaml', 'csv', 'dbf', 'tsv', 'html', 'latex', 'xlsx', 'ods'''
         fileObject = open(self.fname, 'w')
         for dictObj in dictListObj:
             jsObj = json.dumps(dictObj)
@@ -100,4 +105,41 @@ class FHelper(object):
                 if types[typeIndex].upper()=='ods'.upper():
                     fileObject.write(data.ods)
                 fileObject.close()
+
+if __name__ == '__main__':
+   # fhelper应用
+    dictObj = {
+    'andy':{
+        'age': 23,
+        'city': 'shanghai',
+        'skill': 'python'
+    },
+    'william': {
+        'age': 33,
+        'city': 'hangzhou',
+        'skill': 'js'
+    }
+    }
+    dictObj2 = {
+    'andy2':{
+        'age': 23,
+        'city': 'shanghai',
+        'skill': 'python'
+    },
+    'william2': {
+        'age': 33,
+        'city': 'hangzhou',
+        'skill': 'js'
+    }
+    }
+    dictListObj = [dictObj,dictObj2]
+    f = FHelper(filename=r'd:\temp\test.csv')
+    f.SaveDict(dictObj)
+    f2 = FHelper()
+    f2.SaveDictList(dictListObj)
+
+    f.GetAllLines()
+
+
+
 

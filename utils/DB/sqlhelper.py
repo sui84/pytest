@@ -2,10 +2,14 @@
 import pymssql
 import pyodbc
 import pymysql
+import sys
+sys.path.append("..")
+import confhelper
+import sqlite3
 
 
 class SqlHelper(object):
-    def __init__(self,host,user,pwd,db,dbtype='mssql'):
+    def __init__(self,host="localhost",user="",pwd="",db="test",dbtype='mssql'):
         self.host = host
         self.user = user
         self.pwd = pwd
@@ -21,9 +25,12 @@ class SqlHelper(object):
             raise(NameError,"没有设置数据库信息")
         # self.conn = pymssql.connect(host=self.host,user=self.user,password=self.pwd,database=self.db,charset="utf8")
         if self.dbtype=='mssql':
-            self.conn = pyodbc.connect('Driver={SQL Server};Server=localhost\SQLEXPRESS;Database=dbname;uid=root;pwd=pwd')
+            self.conn = pyodbc.connect('Driver={SQL Server};Server=self.host;Database=self.db;uid=self.user;pwd=self.pwd')
+            #self.conn = pymssql.connect(host=self.host, user=self.user, password=self.pwd, database=self.db,charset="utf8")
         if self.dbtype=='mysql':
             self.conn=pymysql.connect(host=self.host,user=self.user,password=self.pwd,db=self.db,charset='utf8mb4')
+        if self.dbtype=='sqlite':
+            self.conn=sqlite3.connect(self.db)
         cur = self.conn.cursor()
         if not cur:
             raise(NameError,"连接数据库失败")
@@ -31,6 +38,7 @@ class SqlHelper(object):
             return cur
 
     def ExecQuery(self,sql):
+        #执行并返回数据
         cur = self.__GetConnect()
         cur.execute(sql)
         resList = cur.fetchall()
@@ -38,8 +46,40 @@ class SqlHelper(object):
         return resList
 
     def ExecNonQuery(self,sql):
+        #执行并提交数据，不返回
         cur = self.__GetConnect()
         cur.execute(sql)
         self.conn.commit()
         self.conn.close()
+
+def TestMssqldb(secname):
+    conf = confhelper.ConfHelper()
+    dbinfo = conf.GetSectionConfig(secname)
+    ms = SqlHelper(host=dbinfo["mssqlserver"], user=dbinfo["mssqluser"], pwd=dbinfo["mssqlpwd"], db=dbinfo["testdb"],dbtype='mssql')
+    resList = ms.ExecQuery("SELECT * FROM test")
+    print resList
+
+def TestMysqldb(secname):
+    conf = confhelper.ConfHelper()
+    dbinfo = conf.GetSectionConfig(secname)
+    print dbinfo
+    ms = SqlHelper(host=dbinfo["mysqlhost"], user=dbinfo["mysqluser"], pwd=dbinfo["mysqlpwd"], db=dbinfo["mysqldb"],dbtype='mysql')
+    sqlstr = "insert into urls(name,url) values('%s','%s')" % ("name","url")
+    ms.ExecNonQuery(sqlstr)
+    resList = ms.ExecQuery("SELECT * FROM urls")
+    print resList
+
+def TestSqlitedb(secname):
+    conf = confhelper.ConfHelper()
+    dbinfo = conf.GetSectionConfig(secname)
+    ms = SqlHelper(db=dbinfo["sqlitetest"],dbtype='sqlite')
+    sqlstr = "insert into company(id,name,age) values(%d,'%s',%d)" % (2,"abddd",8)
+    ms.ExecNonQuery(sqlstr)
+    resList = ms.ExecQuery("select * from company")
+    print resList
+
+if __name__ == '__main__':
+    TestMssqldb("mssqldb")
+    TestMysqldb("mysqldb")
+    TestSqlitedb("sqlitedb")
 

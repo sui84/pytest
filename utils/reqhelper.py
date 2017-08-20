@@ -8,6 +8,7 @@ import os
 from bs4 import BeautifulSoup #__version__ = 4.3.2
 from urlparse import urljoin
 import threadpool
+import sys
 
 
 class ReqHelper(object):
@@ -130,7 +131,8 @@ class ReqHelper(object):
             outfile = self.confs["htmlpath"]
         f = file(outfile, writemode)
         if writemode=='a':
-            lines=[r.request.method,'\n',r.request.url,'\n',str(r.headers),'\n',r.request.body,'\n',r.url,'\n',str(r.status_code),'\n', str(r.headers),'\n',r.text.encode('utf-8','ignore')]
+            lines=[r.request.method,'\n',r.request.url,'\n',str(r.headers),'\n',str(r.request.body),'\n',r.url,'\n',str(r.status_code),'\n', str(r.headers),'\n',r.text.encode('utf-8','ignore')]
+            print lines
             f.writelines(lines)
         if writemode=='w':
             f.write(r.text.encode('utf8'))
@@ -186,5 +188,36 @@ class ReqHelper(object):
 
 
 if __name__ == '__main__':
-    print 'ReqHelper'
+    ''' test.conf
+    #reqhelper
+    [httpurl]
+    baidu=http://www.baidu.com
+    openwrt=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base
+    json=https://api.github.com/repositories/1362490/git/commits/a050faf084662f3a352dd1a941f2c7c9f886d4ad
+
+    [httpsurl]
+
+    [downloadurlfiles]
+    #baseipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base/
+    luciipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/luci/
+    managementipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/management/
+    oldpackagesipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/oldpackages/
+    routing=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/routing/
+    telephony=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/telephony/
+
+    [downloadurlfile]
+    ipk1=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base/6in4_17-1_all.ipk
+    ipk2=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base/agetty_2.24.1-1_ramips_24kec.ipk
+    '''
+    url="http://www.sobaidupan.com/search.asp?wd=pyspider&so_md5key=7db75ceb9f6873de9fb027aa3a7cd7"
+    req = ReqHelper(url=url)
+    #保存某个网页
+    req.SaveHtml(url,outfile=r"d:\temp\test.html")
+    #测试网址
+    req.TestUrls()
+    if len(sys.argv) > 1 and sys.argv[1]=="download":
+        #下载文件
+        req.DownloadUrlFiles(func=lambda x:x['href'].endswith('.ipk'),url="",dp="")
+
+
 
