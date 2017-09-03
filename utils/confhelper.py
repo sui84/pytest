@@ -32,7 +32,10 @@ class ConfHelper(object):
               confs[option] = self.config.get(section,option)
         return confs
     def GetConfig(self,section,option):
-        return self.config.get(section,option)
+        if self.config.has_option(section,option):
+            return self.config.get(section,option)
+        else:
+            return None
         
     def StrToDictList(self,str):
         listobj = ast.literal_eval(str)

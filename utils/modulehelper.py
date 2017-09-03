@@ -6,7 +6,7 @@ import time
 
 class ModuleHelper(object):
     def __init__(self):
-        print 'test'
+        pass
 
     def ExecuteFunction(self,usrsp,mod,func):
         if usrsp != '':

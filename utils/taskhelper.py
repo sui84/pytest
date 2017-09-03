@@ -1,11 +1,13 @@
 from pymongo import MongoClient
 from apscheduler.schedulers.blocking import BlockingScheduler
-from apscheduler.schedulers.background import BackgroundScheduler
+#from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.mongodb import MongoDBJobStore
 from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 import traceback
 import datetime
+import fhelper
+import time
 
 class TaskHelper(object):
     def __init__(self,host="localhost",user="",pwd="",db="test"):
@@ -25,8 +27,8 @@ class TaskHelper(object):
             'coalesce': False,
             'max_instances': 3
         }
-        #self.scheduler = BlockingScheduler(jobstores=self.jobstores, executors=self.executors, job_defaults=self.job_defaults)
-        self.scheduler = BackgroundScheduler(jobstores=self.jobstores, executors=self.executors, job_defaults=self.job_defaults)
+        self.scheduler = BlockingScheduler(jobstores=self.jobstores, executors=self.executors, job_defaults=self.job_defaults)
+        #self.scheduler = BackgroundScheduler(jobstores=self.jobstores, executors=self.executors, job_defaults=self.job_defaults)
 
     def AddJob(self,job):
         self.scheduler.add_job(job, 'interval', seconds=5)
@@ -53,11 +55,14 @@ class TaskHelper(object):
         self.scheduler.schedulers.base.BaseScheduler.resume_job()
 
 def my_job():
-    print 'hello world'
+    f=fhelper.FHelper(r"d:\temp\test.txt")
+    content = "[%s]:run my_job\n" % (time.strftime('%Y/%m/%d %H:%M:%S'))
+    f.SaveFileContent(content,'a')
 
 if __name__ == '__main__':
     task = TaskHelper()
-    task.AddOnetimeJob(my_job)
+    #task.AddOnetimeJob(my_job)
+    task.AddJob(my_job)
     try:
         task.Start()
         #task.Stop()

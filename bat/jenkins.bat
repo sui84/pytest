@@ -1,0 +1,1 @@
+D:\02_Software\Java\jre7\bin\java -jar D:\02_Software\Java\jenkins.war --httpPort=8080

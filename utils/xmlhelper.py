@@ -48,8 +48,8 @@ class XmlHelper(object):
     def SetTagValues(self,filename,valuedicts):
         root = self.GetRootFromFile(filename)
         for valuedict in valuedicts:
-            tagname=valuedict["tagname"]
-            newvalue=valuedict["newvalue"]
+            tagname=valuedict.get("tagname")
+            newvalue=valuedict.get("newvalue")
             nodes= root.getElementsByTagName(tagname) 
             for nodelist in  nodes:
                 if nodelist.nodeType in (nodelist.TEXT_NODE,nodelist.CDATA_SECTION_NODE):

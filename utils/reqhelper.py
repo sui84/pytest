@@ -21,8 +21,8 @@ class ReqHelper(object):
             url = 'http://'+url
         #代理格式 http://user:password@host/
         if len(proxies)==0 and self.confs.has_key("username") and self.confs.has_key("password") and self.confs.has_key("httpserver"):
-            proxies['http'] ="http://%s:%s@%s"%(self.confs["username"],self.confs["password"],self.confs["httpserver"])
-            proxies['https'] ="http://%s:%s@%s"%(self.confs["username"],self.confs["password"],self.confs["httpsserver"])
+            proxies['http'] ="http://%s:%s@%s"%(self.confs.get("username"),self.confs.get("password"),self.confs.get("httpserver"))
+            proxies['https'] ="http://%s:%s@%s"%(self.confs.get("username"),self.confs.get("password"),self.confs.get("httpsserver"))
         self.proxies = proxies
         #SOCKS 代理格式 socks5://user:pass@host:port
         '''proxies = {
@@ -38,12 +38,12 @@ class ReqHelper(object):
         self.headers = headers
         self.url = url
         if outfile=="" and self.confs.has_key("logpath"):
-            outfile=self.confs["logpath"]
+            outfile=self.confs.get("logpath")
         self.outfile = outfile
         self.session = requests.session()
         self.session.proxies=self.proxies
-        if self.confs.has_key("theadnum") and self.confs["theadnum"].isdigit():
-            self.theadnum = int(self.confs["theadnum"])
+        if self.confs.has_key("theadnum") and self.confs.get("theadnum").isdigit():
+            self.theadnum = int(self.confs.get("theadnum"))
         else :
             self.theadnum = 10
 
@@ -63,7 +63,7 @@ class ReqHelper(object):
     # 如果目录不存在就新建
     def GetDownloadPath(self,dp=""):
         if dp=="":
-            dp=self.confs["downloadpath"]
+            dp=self.confs.get("downloadpath")
         if not os.path.exists(dp):
             os.mkdir(dp)
         return dp
@@ -126,9 +126,9 @@ class ReqHelper(object):
     # 保存网页内容
     def SaveHtmlContent(self,r,outfile="",writemode='a'):
         if outfile == "" and writemode == 'a' and self.confs.has_key("logpath"):
-            outfile = self.confs["logpath"]
+            outfile = self.confs.get("logpath")
         if outfile == "" and writemode == 'w' and self.confs.has_key("htmlpath"):
-            outfile = self.confs["htmlpath"]
+            outfile = self.confs.get("htmlpath")
         f = file(outfile, writemode)
         if writemode=='a':
             lines=[r.request.method,'\n',r.request.url,'\n',str(r.headers),'\n',str(r.request.body),'\n',r.url,'\n',str(r.status_code),'\n', str(r.headers),'\n',r.text.encode('utf-8','ignore')]
@@ -139,7 +139,7 @@ class ReqHelper(object):
         f.close()
 
     # 测试网址是否能打开
-    def TestUrls(self):
+    def TestUrls(self,save=False):
         httpurls=self.conf.GetSectionConfig("httpurl")
         httpsurls=self.conf.GetSectionConfig("httpsurl")
         urls=dict(httpurls,**httpsurls)
@@ -149,7 +149,8 @@ class ReqHelper(object):
                     url = 'http://'+url
                 r = requests.get(url, proxies=self.proxies,headers=self.headers,timeout=3)
                 print time.ctime(),r.url," Reponse status code :",r.status_code
-                self.SaveHtmlContent(r,self.outfile,'a')
+                if save == True:
+                    self.SaveHtmlContent(r,self.outfile,'a')
             except Exception,e:
                 print time.ctime(), 'Error:',e.message,'\n',traceback.format_exc()
 
@@ -188,27 +189,6 @@ class ReqHelper(object):
 
 
 if __name__ == '__main__':
-    ''' test.conf
-    #reqhelper
-    [httpurl]
-    baidu=http://www.baidu.com
-    openwrt=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base
-    json=https://api.github.com/repositories/1362490/git/commits/a050faf084662f3a352dd1a941f2c7c9f886d4ad
-
-    [httpsurl]
-
-    [downloadurlfiles]
-    #baseipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base/
-    luciipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/luci/
-    managementipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/management/
-    oldpackagesipk=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/oldpackages/
-    routing=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/routing/
-    telephony=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/telephony/
-
-    [downloadurlfile]
-    ipk1=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base/6in4_17-1_all.ipk
-    ipk2=http://downloads.openwrt.org/barrier_breaker/14.07/ramips/mt7620a/packages/base/agetty_2.24.1-1_ramips_24kec.ipk
-    '''
     url="http://www.sobaidupan.com/search.asp?wd=pyspider&so_md5key=7db75ceb9f6873de9fb027aa3a7cd7"
     req = ReqHelper(url=url)
     #保存某个网页

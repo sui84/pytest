@@ -9,6 +9,7 @@ import threadhelper
 import threading
 from timehelper import elapsedtimedeco
 
+
 #region TCP Flags
 '''
 * F = 0x0001: FIN - 结束; 结束会话
@@ -75,7 +76,7 @@ class ScapyHelper(object):
         self.closedstatus = 'Closed'
         self.filteredstatus = 'Filtered'
         self.unknowstatus = 'Unknow'
-        self.mu = threading.Lock() #1、创建一个锁
+        #self.mu = threading.Lock() #1、创建一个锁
         self.portscans = []
         logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
@@ -95,18 +96,41 @@ class ScapyHelper(object):
         portscan = self.ScanPorts(ips,range(portstart,portend))
         return portscan
 
+
+    def GetPorts(self):
+        conf =  confhelper.ConfHelper(self.confile)
+        scanports = conf.GetSectionConfig("scanports")
+        if scanports.has_key("ips"):
+            ips=scanports.get("ips").split(',')
+        if scanports.has_key("ports"):
+            ports=scanports.get("ports").split(',')
+            ports=[int(item) for item in ports]
+        return ips,ports
+
+    @elapsedtimedeco(True)
+    def MultiProcessScanPorts(self):
+        t=threadhelper.ThreadHelper()
+        #sh.ScanTCP('192.168.1.1',RandShort(),80)
+        #portscans = sh.ScanTCP('192.168.1.1',RandShort
+        #portscans = sh.ScanPorts(ips=[],ports=[])
+        args=[]
+        ips,ports = self.GetPorts()
+        for ip in ips:
+            for port in ports:
+                args.append((ip,RandShort(),port))
+        t.MultiThreadExecute(self.WrapperScanPorts,args)
+
+    def WrapperScanPorts(self,args):
+        #多个参数用这层包起来
+        return self.ScanTCP(*args)
+
     # 调用计时装饰器
     # 装饰器使得线程共享变量失效，存不到数据
     @elapsedtimedeco(True)
     def ScanPorts(self,ips=[],ports=[]):
         self.portscans = []
-        conf =  confhelper.ConfHelper(self.confile)
-        scanports = conf.GetSectionConfig("scanports")
-        if len(ips)==0 and scanports.has_key("ips"):
-            ips=scanports["ips"].split(',')
-        if len(ports)==0 and scanports.has_key("ports"):
-            ports=scanports["ports"].split(',')
-            ports=[int(item) for item in ports]
+        if len(ips)==0 and len(ports)==0:
+            ips,ports = self.GetPorts()
         data=[]
         for ip in ips:
             for port in ports:
@@ -122,6 +146,7 @@ class ScapyHelper(object):
         if(int(stealth_scan_resp.getlayer(ICMP).type)==3 and int(stealth_scan_resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
             return 1
 
+    def ScanTCP(self,dst_ip,src_port,dst_port):
     #1. TCP 连接扫描 # 2.TCP SYN 扫描
     # open
     #(B) --> [SYN] --> (A)
@@ -130,9 +155,6 @@ class ScapyHelper(object):
     # close
     #(B) --> [SYN] --> (A)
     #(B) <-- [RST] <--(A)
-
-
-    def ScanTCP(self,dst_ip,src_port,dst_port):
         stealth_scan_resp = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
         status = self.unknowstatus
         if stealth_scan_resp <> None:
@@ -150,13 +172,60 @@ class ScapyHelper(object):
                     status = self.filteredstatus
 
         print "IP:",dst_ip,"Port:",dst_port,"Status:",status
+        '''
         if self.mu.acquire(True): #2、获取锁状态，一个线程有锁时，别的线程只能在外面等着
             self.portscans.append({"dst_ip":dst_ip,"dst_port":dst_port,"status":status})
             self.mu.release() #3、释放锁
+       '''
+        with open(self.outfile,'a') as f:
+            f.write("IP: %s,Port: %d,Status: %s\n" % (dst_ip,dst_port,status))
         return status
 
-    #3.TCP 圣诞树(Xmas Tree)扫描 ！失败 slow, xmas_scan_resp NoneType
+    # 利用协程可以return data后再一起保存
+    @elapsedtimedeco(True)
+    def GetScanPorts(self,ips=[],ports=[]):
+        self.portscans = []
+        if len(ips)==0 and len(ports)==0:
+            ips,ports = self.GetPorts()
+        data=[]
+        for ip in ips:
+            for port in ports:
+                data.append((ip,self.src_port,port))
+                #status=self.ScanTCP(ip,self.src_port,port)
+                #portscans.append({"dst_ip":ip,"dst_port":port,"status":status})
+
+        t = threadhelper.ThreadHelper()
+        result =  t.MultiGEventExecute(self.WrapperGetScanPorts,data)
+        print result
+        with open(self.outfile,'a') as f:
+            f.writelines(result)
+        return self.portscans
+
+    def WrapperGetScanPorts(self,args):
+        #多个参数用这层包起来
+        return self.GetScanTCP(*args)
+
+    def GetScanTCP(self,dst_ip,src_port,dst_port):
+        stealth_scan_resp = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
+        status = self.unknowstatus
+        if stealth_scan_resp <> None:
+            if(str(type(stealth_scan_resp))==""):
+                status = self.filteredstatus
+            elif(stealth_scan_resp.haslayer(TCP)):
+                if(stealth_scan_resp.getlayer(TCP).flags == 0x12):
+                    send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="R"),timeout=10)
+                    #send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
+                    status = self.openstatus
+                elif (stealth_scan_resp.getlayer(TCP).flags == 0x14):
+                    status = self.closedstatus
+            elif(stealth_scan_resp.haslayer(ICMP)):
+                if self.CheckICMP(stealth_scan_resp):
+                    status = self.filteredstatus
+        result = "IP: %s,Port: %d,Status: %s\n" % (dst_ip,dst_port,status)
+        return result
+
     def ScanTCPXmas(self,dst_ip,src_port,dst_port):
+    #3.TCP 圣诞树(Xmas Tree)扫描 ！失败 slow, xmas_scan_resp NoneType
     # open
     #(B) --> [PSH,FIN,URG] --> (A)
     #(B) <--  None <--(A)
@@ -289,15 +358,18 @@ class ScapyHelper(object):
             elif(int(udp_scan_resp.getlayer(ICMP).type)==3 and int(udp_scan_resp.getlayer(ICMP).code) in [1,2,9,10,13]):
                 return "Filtered"
 
-#if __name__ == '__main__':
-sh = ScapyHelper()
-#sh.ScanTCP('192.168.1.1',RandShort(),80)
-#portscans = sh.ScanTCP('192.168.1.1',RandShort
-portscans = sh.ScanPorts(ips=[],ports=[])
-#wrong: portscans = portscans.sort()
-print portscans
-if portscans<>None:
-    portscans.sort()
-    f=fhelper.FHelper(sh.outfile)
-    f.SaveDictListToType(portscans,'csv','w')
+if __name__ == '__main__':
+    sh = ScapyHelper()
+    #sh.MultiProcessScanPorts()
+    #sh.ScanTCP('192.168.1.1',RandShort(),80)
+    #portscans = sh.ScanTCP('192.168.1.1',RandShort
+    # 多进程速度最快
+    portscans = sh.ScanPorts(ips=[],ports=[])
+    #协程调用，比多进程多花了好几倍时间
+    #portscans =sh.GetScanPorts(ips=[],ports=[])
+
+
+
+
+
 

@@ -38,11 +38,11 @@ class GZHelper(object):
         newtaxtable = filter(f,self.taxtable)
         taxamt = 0
         for i in range(0,len(newtaxtable)):
-            if nettaxincome >= newtaxtable[i]["from"] and nettaxincome <= newtaxtable[i]["to"]:
-                diff = nettaxincome - newtaxtable[i]["from"]
-                print "level : " newtaxtable[i]["from"],"~",newtaxtable[i]["to"]
-                lastleveltaxamt = newtaxtable[i]["accumulatedtaxamt"]-newtaxtable[i]["taxamount"]
-                taxamt = (lastleveltaxamt+diff*newtaxtable[i]["taxpercentage"])*(1-self.proftaxdeduction)
+            if nettaxincome >= newtaxtable[i].get("from") and nettaxincome <= newtaxtable[i].get("to"):
+                diff = nettaxincome - newtaxtable[i].get("from")
+                print "level : ", newtaxtable[i].get("from"),"~",newtaxtable[i].get("to")
+                lastleveltaxamt = newtaxtable[i].get("accumulatedtaxamt")-newtaxtable[i].get("taxamount")
+                taxamt = (lastleveltaxamt+diff*newtaxtable[i].get("taxpercentage"))*(1-self.proftaxdeduction)
                 break
         return taxamt
 

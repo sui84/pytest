@@ -20,6 +20,28 @@ class TimeHelper(object):
         d = datetime.datetime.now()+datetime.timedelta(days=days,hours=hours,minutes=mins)
         return d
 
+    def GetYearMonths(self,offset):
+        #往前或往后多少个月
+        yearmonths = []
+        now = self.GetNow()
+        y = curyear = now.year
+        curmonth = now.month
+        for i in range(0,abs(offset)):
+            if offset > 0 :
+                m = (curmonth+i-1)%12+1
+            else:
+                m =(curmonth-i-1)%12+1
+            if i>0 and m==1 and offset > 0 :
+                y +=1
+            if i>0 and m==12  and offset < 0 :
+                y -=1
+            yearmonths.append({"year":y,"month":m})
+        return yearmonths
+
+    def GetNow(self):
+        # year : datetime.datetime.now().year
+        return datetime.datetime.now()
+
 def elapsedtimedeco(arg=True):
     if arg:
         def _deco(func):

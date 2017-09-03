@@ -55,27 +55,27 @@ class SqlHelper(object):
 def TestMssqldb(secname):
     conf = confhelper.ConfHelper()
     dbinfo = conf.GetSectionConfig(secname)
-    ms = SqlHelper(host=dbinfo["mssqlserver"], user=dbinfo["mssqluser"], pwd=dbinfo["mssqlpwd"], db=dbinfo["testdb"],dbtype='mssql')
-    resList = ms.ExecQuery("SELECT * FROM test")
+    mydb = SqlHelper(host=dbinfo.get("mssqlserver"), user=dbinfo.get("mssqluser"), pwd=dbinfo.get("mssqlpwd"), db=dbinfo.get("testdb"),dbtype='mssql')
+    resList = mydb.ExecQuery("SELECT * FROM test")
     print resList
 
 def TestMysqldb(secname):
     conf = confhelper.ConfHelper()
     dbinfo = conf.GetSectionConfig(secname)
     print dbinfo
-    ms = SqlHelper(host=dbinfo["mysqlhost"], user=dbinfo["mysqluser"], pwd=dbinfo["mysqlpwd"], db=dbinfo["mysqldb"],dbtype='mysql')
+    mydb = SqlHelper(host=dbinfo.get("mysqlhost"), user=dbinfo.get("mysqluser"), pwd=dbinfo.get("mysqlpwd"), db=dbinfo.get("mysqldb"),dbtype='mysql')
     sqlstr = "insert into urls(name,url) values('%s','%s')" % ("name","url")
-    ms.ExecNonQuery(sqlstr)
-    resList = ms.ExecQuery("SELECT * FROM urls")
+    mydb.ExecNonQuery(sqlstr)
+    resList = mydb.ExecQuery("SELECT * FROM urls")
     print resList
 
 def TestSqlitedb(secname):
     conf = confhelper.ConfHelper()
     dbinfo = conf.GetSectionConfig(secname)
-    ms = SqlHelper(db=dbinfo["sqlitetest"],dbtype='sqlite')
+    mydb = SqlHelper(db=dbinfo.get("sqlitetest"),dbtype='sqlite')
     sqlstr = "insert into company(id,name,age) values(%d,'%s',%d)" % (2,"abddd",8)
-    ms.ExecNonQuery(sqlstr)
-    resList = ms.ExecQuery("select * from company")
+    mydb.ExecNonQuery(sqlstr)
+    resList = mydb.ExecQuery("select * from company")
     print resList
 
 if __name__ == '__main__':

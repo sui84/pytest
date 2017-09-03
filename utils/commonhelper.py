@@ -10,6 +10,13 @@ except ImportError:
     from io import StringIO
 import commands
 import subprocess
+import os.path
+import hashlib
+import html
+import base64
+import json
+import socket
+import requests
 
 
 def GetFullUrl(url1,url2):
@@ -110,3 +117,129 @@ def GetCommandResult(cmsstr="ls"):
     # 只有linux平台起作用
     cmdresult =  commands.getoutput(cmsstr)
     return cmdresult
+
+def GetPadString(num,len):
+    #数字字符串前面补0
+    nnum=str(num).zfill(len)
+    return nnum
+
+def CheckDir(args, dirname, filenames ):
+    print 'Directory',dirname
+    for filename in filenames:
+        #print ' File',filename
+        fpath = os.path.join(dirname, filename)
+        print fpath
+        files.append(fpath)
+
+def GetDirAndFiles(dirpath):
+    #列出所有子目录和文件
+    global files
+    files=[]
+    os.path.walk(dirpath, CheckDir, None)
+    print u'总共%d个文件' % len(files)
+    return files
+
+def GetDirFiles(dirpath):
+    #只列出文件
+    files=[]
+    for fpathe,dirs,fs in os.walk(dirpath):
+      for f in fs:
+        files.append(os.path.join(fpathe,f))
+    return files
+
+def ExecuteCmd(cmdstr):
+    # 阻塞执行命令：获取所有子目录和文件
+    # cmdstr = r"dir D:\DB\txt /s/-b >d:\temp\filelist.txt"
+    print cmdstr
+    result = os.system(cmdstr)
+    if result == False:
+        print "Success!"
+    else:
+        print "Failed!"
+
+def ExecuteCmdWithSubProcess(cmdlist):
+    import subprocess
+    #r=subprocess.call(['ping','www.baidu.com'])
+    r=subprocess.call(cmdlist)
+
+def Str2Unicode(str):
+    #str = "\\u7f8e\\u56fd"
+    unicodestr = str.decode("unicode-escape")
+    print unicodestr
+    return unicodestr
+
+def Unicode2Str(unicodestr):
+    #unicodestr = u"美国"
+    str = unicodestr.encode("unicode-escape")
+    print str
+    return str
+
+def Base64Encode(content):
+    return base64.b64encode(bytes(content))
+
+def Base64Decode(content):
+    return base64.b64decode(bytes(content))
+
+def Base64URLEncode(content):
+    return base64.urlsafe_b64encode(bytes(content))
+
+def Base64URLDecode(content):
+    return base64.urlsafe_b64decode(bytes(content))
+
+def URLEncode(content):
+    return urllib.parse.quote(content, safe='')
+
+def URLDecode(content):
+    return urllib.parse.unquote(content)
+
+def URLJSONEncode(content):
+    json_content = json.loads(content)
+    return urllib.parse.urlencode(json_content)
+
+def URLJSONDecode(content):
+    return str(urllib.parse.parse_qs(content))
+
+def HTMLEncode(content):
+    return html.escape(content)
+
+def Dec2HEX(content):
+    figures = content.split(' ')
+    result = ' '
+    figure_list = []
+    for figure in figures:
+        figure_list.append(str(hex(int(figure))))
+    return result.join(figure_list)
+
+def Hex2Dec(content):
+    figures = content.split(' ')
+    result = ' '
+    figure_list = []
+    for figure in figures:
+        figure_list.append(str(int(figure, 16)))
+    return result.join(figure_list)
+
+def MD5(content):
+    return hashlib.md5(bytes(content)).hexdigest()
+
+def SHA1(content):
+    return hashlib.sha1(bytes(content)).hexdigest()
+
+def SHA256(content):
+    return hashlib.sha256(bytes(content)).hexdigest()
+
+def SHA384(content):
+    return hashlib.sha384(bytes(content)).hexdigest()
+
+def SHA512(content):
+    return hashlib.sha512(bytes(content)).hexdigest()
+
+def RemoveDuplicate(l=['8','7','7','5']):
+    #去重并保留原来顺序
+    result=list(set(l))
+    result.sort(key=l.index)
+    return result
+
+def GetCurrentIP(url="http://ip.chinaz.com/getip.aspx"):
+    r=requests.get(url)
+    return r.text
+

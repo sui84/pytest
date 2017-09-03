@@ -1,6 +1,7 @@
 #encoding=utf-8
 import string
 import pickle
+import json
 #S.split(str,'')
 #S.join(list,'')
 class StrHelper(object):
@@ -22,6 +23,14 @@ class StrHelper(object):
     def DeserializeFromFile(self,ifile):
         loadsed = pickle.load(open(ifile,'r'))
         return loadsed
+
+    def Jsonstr2Obj(self,jsonstr):
+        obj =json.loads(jsonstr)
+        return obj
+
+    def Obj2JsonStr(self,obj):
+        jsonstr =json.dumps(obj)
+        return jsonstr
 
 
 

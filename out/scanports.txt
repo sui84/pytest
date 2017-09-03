@@ -1,51 +1,165 @@
-Open,192.168.1.1,21
-Open,192.168.1.1,22
-Open,192.168.1.1,23
-Closed,192.168.1.1,25
-Open,192.168.1.1,53
-Open,192.168.1.1,80
-Open,192.168.1.1,111
-Closed,192.168.1.1,112
-Open,192.168.1.1,139
-Open,192.168.1.1,443
-Open,192.168.1.1,445
-Closed,192.168.1.1,3389
-Closed,192.168.1.1,8000
-Closed,192.168.1.1,8001
-Closed,192.168.1.141,53
-Closed,192.168.1.141,111
-Closed,192.168.1.141,112
-Closed,192.168.1.141,139
-Closed,192.168.1.141,443
-Closed,192.168.1.141,445
-Closed,192.168.1.141,3389
-Closed,192.168.1.141,8000
-Closed,192.168.1.141,8001
-Closed,192.168.1.142,21
-Closed,192.168.1.142,22
-Closed,192.168.1.142,23
-Closed,192.168.1.142,25
-Closed,192.168.1.142,53
-Closed,192.168.1.142,80
-Closed,192.168.1.142,111
-Closed,192.168.1.142,112
-Closed,192.168.1.142,139
-Closed,192.168.1.142,443
-Closed,192.168.1.142,445
-Closed,192.168.1.142,3389
-Closed,192.168.1.142,8000
-Closed,192.168.1.142,8001
-Closed,192.168.1.205,21
-Closed,192.168.1.205,22
-Closed,192.168.1.205,23
-Closed,192.168.1.205,25
-Closed,192.168.1.205,53
-Closed,192.168.1.205,80
-Closed,192.168.1.205,111
-Closed,192.168.1.205,112
-Closed,192.168.1.205,139
-Closed,192.168.1.205,443
-Closed,192.168.1.205,445
-Closed,192.168.1.205,3389
-Closed,192.168.1.205,8000
-Closed,192.168.1.205,8001
+IP: 192.168.1.1,Port: 23,Status: Closed
+IP: 192.168.1.1,Port: 21,Status: Closed
+IP: 192.168.1.1,Port: 22,Status: Closed
+IP: 192.168.1.1,Port: 443,Status: Closed
+IP: 192.168.1.1,Port: 139,Status: Closed
+IP: 192.168.1.1,Port: 25,Status: Closed
+IP: 192.168.1.1,Port: 111,Status: Closed
+IP: 192.168.1.1,Port: 112,Status: Closed
+IP: 192.168.1.1,Port: 445,Status: Closed
+IP: 192.168.1.1,Port: 3389,Status: Closed
+IP: 192.168.1.1,Port: 8000,Status: Closed
+IP: 192.168.1.1,Port: 8001,Status: Closed
+IP: 192.168.1.1,Port: 53,Status: Open
+IP: 192.168.1.1,Port: 80,Status: Open
+IP: 192.168.1.143,Port: 80,Status: Unknow
+IP: 192.168.1.143,Port: 22,Status: Unknow
+IP: 192.168.1.143,Port: 23,Status: Unknow
+IP: 192.168.1.143,Port: 111,Status: Unknow
+IP: 192.168.1.143,Port: 25,Status: Unknow
+IP: 192.168.1.143,Port: 53,Status: Unknow
+IP: 192.168.1.143,Port: 112,Status: Unknow
+IP: 192.168.1.143,Port: 139,Status: Unknow
+IP: 192.168.1.143,Port: 443,Status: Unknow
+IP: 192.168.1.143,Port: 8001,Status: Unknow
+IP: 192.168.1.143,Port: 8000,Status: Unknow
+IP: 192.168.1.143,Port: 445,Status: Unknow
+IP: 192.168.1.143,Port: 3389,Status: Unknow
+IP: 192.168.1.141,Port: 21,Status: Unknow
+IP: 192.168.1.141,Port: 22,Status: Unknow
+IP: 192.168.1.141,Port: 80,Status: Unknow
+IP: 192.168.1.141,Port: 23,Status: Unknow
+IP: 192.168.1.141,Port: 25,Status: Unknow
+IP: 192.168.1.141,Port: 53,Status: Unknow
+IP: 192.168.1.141,Port: 112,Status: Unknow
+IP: 192.168.1.141,Port: 443,Status: Unknow
+IP: 192.168.1.141,Port: 111,Status: Unknow
+IP: 192.168.1.141,Port: 139,Status: Unknow
+IP: 192.168.1.141,Port: 445,Status: Unknow
+IP: 192.168.1.141,Port: 3389,Status: Unknow
+IP: 192.168.1.141,Port: 8000,Status: Unknow
+IP: 192.168.1.141,Port: 8001,Status: Unknow
+IP: 192.168.1.231,Port: 21,Status: Unknow
+IP: 192.168.1.231,Port: 80,Status: Unknow
+IP: 192.168.1.231,Port: 23,Status: Unknow
+IP: 192.168.1.231,Port: 22,Status: Unknow
+IP: 192.168.1.231,Port: 53,Status: Unknow
+IP: 192.168.1.231,Port: 25,Status: Unknow
+IP: 192.168.1.231,Port: 111,Status: Unknow
+IP: 192.168.1.231,Port: 139,Status: Unknow
+IP: 192.168.1.231,Port: 112,Status: Unknow
+IP: 192.168.1.231,Port: 443,Status: Unknow
+IP: 192.168.1.231,Port: 3389,Status: Unknow
+IP: 192.168.1.231,Port: 445,Status: Unknow
+IP: 192.168.1.231,Port: 8001,Status: Unknow
+IP: 192.168.1.231,Port: 8000,Status: Unknow
+IP: 192.168.1.142,Port: 21,Status: Unknow
+IP: 192.168.1.142,Port: 80,Status: Unknow
+IP: 192.168.1.142,Port: 23,Status: Unknow
+IP: 192.168.1.142,Port: 25,Status: Unknow
+IP: 192.168.1.142,Port: 53,Status: Unknow
+IP: 192.168.1.142,Port: 112,Status: Unknow
+IP: 192.168.1.142,Port: 111,Status: Unknow
+IP: 192.168.1.142,Port: 443,Status: Unknow
+IP: 192.168.1.142,Port: 139,Status: Unknow
+IP: 192.168.1.142,Port: 445,Status: Unknow
+IP: 192.168.1.142,Port: 3389,Status: Unknow
+IP: 192.168.1.205,Port: 21,Status: Unknow
+
+IP: 192.168.1.142,Port: 8001,Status: Unknow
+IP: 192.168.1.205,Port: 22,Status: Unknow
+IP: 192.168.1.205,Port: 23,Status: Unknow
+IP: 192.168.1.205,Port: 25,Status: Unknow
+IP: 192.168.1.205,Port: 53,Status: Unknow
+IP: 192.168.1.205,Port: 139,Status: Unknow
+IP: 192.168.1.205,Port: 112,Status: Unknow
+IP: 192.168.1.205,Port: 443,Status: Unknow
+IP: 192.168.1.205,Port: 111,Status: Unknow
+
+IP: 192.168.1.205,Port: 445,Status: Unknow
+IP: 192.168.1.205,Port: 8000,Status: Unknow
+IP: 192.168.1.205,Port: 8001,Status: Unknow
+IP: 192.168.1.1,Port: 80,Status: Open
+IP: 192.168.1.1,Port: 21,Status: Closed
+IP: 192.168.1.1,Port: 22,Status: Closed
+IP: 192.168.1.1,Port: 23,Status: Closed
+IP: 192.168.1.1,Port: 25,Status: Closed
+IP: 192.168.1.1,Port: 53,Status: Open
+IP: 192.168.1.1,Port: 111,Status: Closed
+IP: 192.168.1.1,Port: 112,Status: Closed
+IP: 192.168.1.1,Port: 139,Status: Closed
+IP: 192.168.1.1,Port: 443,Status: Closed
+IP: 192.168.1.1,Port: 445,Status: Closed
+IP: 192.168.1.1,Port: 3389,Status: Closed
+IP: 192.168.1.1,Port: 8000,Status: Closed
+IP: 192.168.1.1,Port: 8001,Status: Closed
+IP: 192.168.1.143,Port: 80,Status: Unknow
+IP: 192.168.1.143,Port: 21,Status: Unknow
+IP: 192.168.1.143,Port: 22,Status: Unknow
+IP: 192.168.1.143,Port: 23,Status: Unknow
+IP: 192.168.1.143,Port: 25,Status: Unknow
+IP: 192.168.1.143,Port: 53,Status: Unknow
+IP: 192.168.1.143,Port: 111,Status: Unknow
+IP: 192.168.1.143,Port: 112,Status: Unknow
+IP: 192.168.1.143,Port: 139,Status: Unknow
+IP: 192.168.1.143,Port: 443,Status: Unknow
+IP: 192.168.1.143,Port: 445,Status: Unknow
+IP: 192.168.1.143,Port: 3389,Status: Unknow
+IP: 192.168.1.143,Port: 8000,Status: Unknow
+IP: 192.168.1.143,Port: 8001,Status: Unknow
+IP: 192.168.1.141,Port: 80,Status: Unknow
+IP: 192.168.1.141,Port: 21,Status: Unknow
+IP: 192.168.1.141,Port: 22,Status: Unknow
+IP: 192.168.1.141,Port: 23,Status: Unknow
+IP: 192.168.1.141,Port: 25,Status: Unknow
+IP: 192.168.1.141,Port: 53,Status: Unknow
+IP: 192.168.1.141,Port: 111,Status: Unknow
+IP: 192.168.1.141,Port: 112,Status: Unknow
+IP: 192.168.1.141,Port: 139,Status: Unknow
+IP: 192.168.1.141,Port: 443,Status: Unknow
+IP: 192.168.1.141,Port: 445,Status: Unknow
+IP: 192.168.1.141,Port: 3389,Status: Unknow
+IP: 192.168.1.141,Port: 8000,Status: Unknow
+IP: 192.168.1.141,Port: 8001,Status: Unknow
+IP: 192.168.1.231,Port: 80,Status: Unknow
+IP: 192.168.1.231,Port: 21,Status: Unknow
+IP: 192.168.1.231,Port: 22,Status: Unknow
+IP: 192.168.1.231,Port: 23,Status: Unknow
+IP: 192.168.1.231,Port: 25,Status: Unknow
+IP: 192.168.1.231,Port: 53,Status: Unknow
+IP: 192.168.1.231,Port: 111,Status: Unknow
+IP: 192.168.1.231,Port: 112,Status: Unknow
+IP: 192.168.1.231,Port: 139,Status: Unknow
+IP: 192.168.1.231,Port: 443,Status: Unknow
+IP: 192.168.1.231,Port: 445,Status: Unknow
+IP: 192.168.1.231,Port: 3389,Status: Unknow
+IP: 192.168.1.231,Port: 8000,Status: Unknow
+IP: 192.168.1.231,Port: 8001,Status: Unknow
+IP: 192.168.1.142,Port: 80,Status: Unknow
+IP: 192.168.1.142,Port: 21,Status: Unknow
+IP: 192.168.1.142,Port: 22,Status: Unknow
+IP: 192.168.1.142,Port: 23,Status: Unknow
+IP: 192.168.1.142,Port: 25,Status: Unknow
+IP: 192.168.1.142,Port: 53,Status: Unknow
+IP: 192.168.1.142,Port: 111,Status: Unknow
+IP: 192.168.1.142,Port: 112,Status: Unknow
+IP: 192.168.1.142,Port: 139,Status: Unknow
+IP: 192.168.1.142,Port: 443,Status: Unknow
+IP: 192.168.1.142,Port: 445,Status: Unknow
+IP: 192.168.1.142,Port: 3389,Status: Unknow
+IP: 192.168.1.142,Port: 8000,Status: Unknow
+IP: 192.168.1.142,Port: 8001,Status: Unknow
+IP: 192.168.1.205,Port: 80,Status: Unknow
+IP: 192.168.1.205,Port: 21,Status: Unknow
+IP: 192.168.1.205,Port: 22,Status: Unknow
+IP: 192.168.1.205,Port: 23,Status: Unknow
+IP: 192.168.1.205,Port: 25,Status: Unknow
+IP: 192.168.1.205,Port: 53,Status: Unknow
+IP: 192.168.1.205,Port: 111,Status: Unknow
+IP: 192.168.1.205,Port: 112,Status: Unknow
+IP: 192.168.1.205,Port: 139,Status: Unknow
+IP: 192.168.1.205,Port: 443,Status: Unknow
+IP: 192.168.1.205,Port: 445,Status: Unknow
+IP: 192.168.1.205,Port: 3389,Status: Unknow
+IP: 192.168.1.205,Port: 8000,Status: Unknow
+IP: 192.168.1.205,Port: 8001,Status: Unknow
