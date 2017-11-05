@@ -4,15 +4,12 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import json
 import tablib
-from pymongo import MongoClient
 import base64
 import os
 import time
 import errno
-import fcntl
 import multiprocessing
 import sys
-import fakerhelper
 import timehelper
 import pandas as pd
 '''
@@ -110,7 +107,12 @@ class FHelper(object):
         return lines
 
     def SaveLines(self,lines,mode='w'):
-        newlines = [line+'\n' for line in lines]  #\n换行符（转义字符）
+        #不确定哪种写法好
+        #newlines = [line+'\n' for line in lines]  #\n换行符（转义字符）
+        newlines = '\n'.join(lines)
+        dirname=os.path.dirname(self.fname)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
         with open(self.fname,mode) as f:
             f.writelines(newlines)
 
@@ -192,65 +194,6 @@ class FHelper(object):
                 if types[typeIndex].upper()=='ods'.upper():
                     fileObject.write(data.ods)
                 fileObject.close()
-
-if os.name == 'nt':
-    import win32con, win32file, pywintypes
-    LOCK_EX = win32con.LOCKFILE_EXCLUSIVE_LOCK
-    LOCK_SH = 0 # The default value
-    LOCK_NB = win32con.LOCKFILE_FAIL_IMMEDIATELY
-    __overlapped = pywintypes.OVERLAPPED(  )
-
-    def lock(file, flags):
-        hfile = win32file._get_osfhandle(file.fileno(  ))
-        win32file.LockFileEx(hfile, flags, 0, 0xffff0000, __overlapped)
-
-    def unlock(file):
-        hfile = win32file._get_osfhandle(file.fileno(  ))
-        win32file.UnlockFileEx(hfile, 0, 0xffff0000, __overlapped)
-elif os.name == 'posix':
-    from fcntl import LOCK_EX, LOCK_SH, LOCK_NB
-
-    def lock(file, flags):
-        fcntl.flock(file.fileno(  ), flags)
-
-    def unlock(file):
-        fcntl.flock(file.fileno(  ), fcntl.LOCK_UN)
-else:
-    raise RuntimeError("File Locker only support NT and Posix platforms!")
-
-def writeLogfile(args):
-    try:
-        time.sleep(fakerhelper.GetRandomInt(1,5))
-        logfile, msg = args
-        f = open(logfile, "a+")
-        lock(f, LOCK_EX)
-        f.write(msg + "\n")
-        unlock(f)
-    except Exception as ex:
-        print("Error Info: %s"%(str(ex)))
-    finally:
-        f.close()
-
-def writeLogfilewithoutlock(args):
-    try:
-        time.sleep(fakerhelper.GetRandomInt(1,5))
-        logfile, msg = args
-        f = open(logfile, "a")
-        #lock(f, LOCK_EX)
-        f.write(msg + "\n")
-        #unlock(f)
-    except Exception as ex:
-        print("Error Info: %s"%(str(ex)))
-    finally:
-        f.close()
-
-def multiExecute(logfile, count):
-    pool = multiprocessing.Pool(processes = count)
-    pool.map(writeLogfile, [(logfile, a * 80) for a in range(1,10000)]) #"abcdefghijklmnopqrstuvwxyz"])
-
-def multiExecutewithoutlock(logfile, count):
-    pool = multiprocessing.Pool(processes = count)
-    pool.map(writeLogfilewithoutlock, [(logfile, str(a)* 80) for a in range(1,10000)]) #"abcdefghijklmnopqrstuvwxyz"])
 
 if __name__ == '__main__':
     # python fhelper.py testlockfile

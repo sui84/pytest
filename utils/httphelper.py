@@ -1,27 +1,45 @@
 #encoding=utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import httplib
 import fhelper
 import confhelper
 import commonhelper
-import loghelper
 import xmlhelper
 import time
+import pprint
+import urllib
+try:
+    import requests
+except Exception,e:
+    import requests
+import fakerhelper
 
-
-logger = loghelper.create_logger()
 
 class HttpHelper(object):
     def __init__(self):
-        self.headers={'Accept':"*/*"
-                    ,'Connection': "Keep-Alive"
-                    ,'Accept-Language': "zh-CN,zh;q=0.8"
-                    ,'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
-                    ,'Content-Type':"text/html; charset=utf-8"}
-    
+        headers = {}
+        headers['Accept']='*/*'
+        headers['Connection']='Keep-Alive'
+        headers['Accept-Encoding']='gzip, deflate, sdch'
+        headers['Accept-Language']='zh-CN,zh;q=0.8'
+        headers['Cache-Control']='no-cache'
+        headers['Connection']='keep-alive'
+        #headers['Cookie']='Hm_lvt_f8bdd88d72441a9ad0f8c82db3113a84=1449819861; Hm_lpvt_f8bdd88d72441a9ad0f8c82db3113a84=1449819967'
+        headers['User-Agent']=fakerhelper.GetFakerData("useragent")
+
+        self.headers= headers
+        self.headers['Content-Type']="text/html; charset=utf-8"
+        self.xmlheaders=headers
+        self.xmlheaders['Content-Type']="text/xml;charset=UTF-8"
+        self.soapxmlheaders=headers
+        self.soapxmlheaders['Content-Type']="application/soap+xml;charset=UTF-8"
+
     # send get request
     def GetResponse(self,host):
         conn=httplib.HTTPConnection(host,url)
-        #header错误会导致得到的数据乱码
+        #header error cause data wrong
         conn.request('GET',url,'',self.headers)
         res=conn.getresponse()
         if res.status == 200:
@@ -35,7 +53,6 @@ class HttpHelper(object):
     def PostResponse(self,host,parasdict,url):
         params = urllib.urlencode(parasdict)
         conn=httplib.HTTPConnection(host)
-        #header错误会导致得到的数据乱码
         conn.request('POST',url,params,self.headers)
         res=conn.getresponse()
         if res.status == 200:
@@ -46,13 +63,14 @@ class HttpHelper(object):
         return data
     
     # send soap request
-    def WebServiceResponse(self,host,url,soapaction,xml):
+    def WebServiceResponse(self,url,soapaction,xml):
+        host = self.GetHost(url)
         webservice = httplib.HTTP(host)
         webservice.putrequest("POST", url)
         webservice.putheader("Host", host)
         webservice.putheader("SOAPAction", soapaction)
         webservice.putheader("User-Agent", "Python Post")
-        webservice.putheader("Content-type", "text/xml; charset=\"UTF-8\"")
+        webservice.putheader("Content-type", "application/soap+xml")
         webservice.putheader("Content-length", "%d" % len(xml))
         webservice.endheaders()
         print host,url,soapaction,xml
@@ -66,8 +84,17 @@ class HttpHelper(object):
         webservice.close()
         return data
 
-    
-    loghelper.exception(logger)        
+    # send soap request
+    def PostXMLRequest(self,url,xml,proxies={}):
+        print url,xml
+        response=requests.post(url,data=xml,headers=self.soapxmlheaders,proxies=proxies)
+        if response.status_code==200:
+            data = response.text
+        else:
+            data =  str(response.status_code) + response.reason
+        pprint.pprint(data)
+        return data
+
     def CallWebService(self,host,url,soapaction,ixml,oxml):
         fh=fhelper.FHelper(ixml)
         xml = fh.GetFileContent()
@@ -76,12 +103,37 @@ class HttpHelper(object):
         with open(oxml, 'w') as f:
             f.write(result)
 
+    def GetHostPort(self,url):
+        proto,rest=urllib.splittype(url)
+        host,rest=urllib.splithost(rest)
+        host,port=urllib.splitport(host)
+        if port is None:
+           port = 80
+        return host ,port
+
+    def GetHost(self,url):
+        proto,rest=urllib.splittype(url)
+        host,rest=urllib.splithost(rest)
+        return host
 
 if __name__ == '__main__':
     http=HttpHelper()
+    x=xmlhelper.XmlHelper()
+    action = 'getDomesticCity'
+    reqpath = r"d:\temp\req.xml"
+    ns = r'http://WebXml.com.cn/'
+    host='61.147.124.120'
+    url='http://ws.webxml.com.cn/webservices/DomesticAirline.asmx'
+    #replace xml item value
+    #valuedicts = conf.StrToDictList(req["valuedicts"])
+    #x.SetTagValues(reqpath,valuedicts)
+    soapaction=commonhelper.GetFullUrl(ns,action)
+    outfpath=r'd:\temp\response.xml'
+    http.CallWebService(host,url,soapaction,reqpath,outfpath)
+    #output to PDF file
+    '''
     #result=http.GetResponse(host)
     conf=confhelper.ConfHelper()
-    x=xmlhelper.XmlHelper()
     confs = conf.GetSectionConfig("soaphttp")
     host=confs["soaphost"]
     url=confs["soapurl"]
@@ -106,5 +158,6 @@ if __name__ == '__main__':
             ofpath = commonhelper.GetDstPath(outxmldir,fname)
             f = fhelper.FHelper(ofpath)
             f.SaveByteStrToFile(bytestr)
+    '''
 
 

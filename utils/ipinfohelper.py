@@ -39,7 +39,7 @@ QQWry.Dat的格式如下:
    范围内IP的信息
 
 '''
-
+#region
 class IPInfo(object):
     '''QQWry.Dat数据库查询功能集合
     '''
@@ -183,7 +183,52 @@ class IPInfo(object):
             offset = self.getLong3(o + 4)
             (c, a) = self.getAddr(offset + 4)
             print "%s %d %s/%s" % (ip, offset, c, a)
+#endregion
 
+try:
+    import requests
+except Exception,e:
+    import requests
+from bs4 import BeautifulSoup
+import re
+
+proxiesfile = r'..\out\proxies.txt'
+
+def ProxySpider():
+	headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'}
+	for i in range(900):
+		url='http://www.xicidaili.com/wt/'+str(i)
+		r=requests.get(url=url,headers=headers)
+		html = r.text
+		#print r.status_code
+		soup= BeautifulSoup(html, "html.parser")
+		datas=soup.find_all(name='tr',attrs={'class':re.compile('|[^odd]')})
+		for data in datas:
+			soup_proxy= BeautifulSoup(str(data) , "html.parser")
+			proxy_contents=soup_proxy.find_all(name='td')
+			ip_org=str(proxy_contents[1].string)
+			ip="http://"+ip_org
+			port=str(proxy_contents[2].string)
+			protocol=str(proxy_contents[5].string)
+			ValifyProxy(protocol,ip,port)
+
+def ValifyProxy(protocol='http',ip='',port=0):
+    from  urllib2 import  OpenerDirector,Request,ProxyHandler,URLError,HTTPError,BaseHandler
+    import urllib2
+    import fakerhelper
+    proxyheader = ProxyHandler({protocol:"%s:%s" % (ip ,port)})
+    proxyopener = urllib2.build_opener(proxyheader)
+    baseheader = BaseHandler()
+    headers = fakerhelper.GetFakerHeader()
+    baseheader.add_parent(headers)
+    try:
+        testresponse = proxyopener.open("http://www.baidu.com",timeout = 10)
+    except:
+        print "wrong proxy ip",ip
+    else:
+        print "correct proxy ip",ip,":",port
+        with open(proxiesfile,'ab') as f:
+            f.write("%s::%s\n" % (ip , port))
 
 def main():
     i = IPInfo(r'E:\MyProjects\Github\IPProxys\data\QQWry.Dat')
@@ -196,4 +241,5 @@ def main():
     print '%s %s/%s' % (sys.argv[1], c, a)
 
 if __name__ == '__main__':
-    main()
+    #main()
+    ProxySpider()

@@ -28,6 +28,7 @@ class ThreadHelper(object):
         [pool.putRequest(req) for req in reqs]
         pool.wait()
 
+
     #多进程
     #@timehelper.elapsedtimedeco(True)
     def MultiExecute(self,func,args):

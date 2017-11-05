@@ -16,9 +16,12 @@ class TimeHelper(object):
     def GetCurrentTimeStr(self, fmt='%Y/%m/%d %H:%M:%S'):
         return time.strftime(fmt)
 
-    def AddDate(self,days=0,hours=0,mins=0):
-        d = datetime.datetime.now()+datetime.timedelta(days=days,hours=hours,minutes=mins)
+    def AddDate(self,basedt =datetime.datetime.now(), days=0,hours=0,mins=0):
+        d = basedt+datetime.timedelta(days=days,hours=hours,minutes=mins)
         return d
+
+    def GetDateDiff(self,date1, date2):
+        return abs(date2-date1).days
 
     def GetYearMonths(self,offset):
         #往前或往后多少个月

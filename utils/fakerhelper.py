@@ -6,8 +6,13 @@ from faker.providers import BaseProvider
 import random
 import confhelper
 import time
-import requests
+try:
+    import requests
+except Exception,e:
+    import requests
 import json
+import httphelper
+
 
 def GetRandomInt(start,end):
     data = random.randint(start, end)
@@ -135,6 +140,7 @@ def GetFakerHeader():
     }
     return HEADER
 
+'''
 def GetProxies(num=10):
     conf=confhelper.ConfHelper()
     httpproxy = conf.GetConfig("proxies","httpproxy") % num
@@ -156,6 +162,21 @@ def GetProxies(num=10):
     with open(proxiesfile,'r') as f:
         lines = f.readlines()
     return lines
+'''
+
+def GetProxies():
+    proxiesfile = r'..\out\proxies.txt'
+    with open(proxiesfile,'r') as f:
+        data = f.read()
+    lines=data.splitlines()
+    print lines
+    proxy = random.choice(lines)
+    proxies = {
+      "http": proxy,
+      "https": proxy,
+    }
+    return proxies
+
 
 def ValifyProxy(ip,port,testipurl,timeout,proxiesfile):
     proxies={"http": "http://%s:%s"%(ip,port),"https": "http://%s:%s"%(ip,port)}
@@ -175,5 +196,5 @@ def ValifyProxy(ip,port,testipurl,timeout,proxiesfile):
 
 if __name__ == '__main__':
     #获取IP代理
-    GetProxies(100)
+    GetProxies()
 

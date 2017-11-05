@@ -1,0 +1,65 @@
+﻿token :  
+mongoserver : 192.168.1.143
+mongoport : 27017
+mongodb : test
+proxyurl : http://lab.crossincode.com/proxy/
+httpproxy :  http://lab.crossincode.com/proxy/get/?num=%d
+httpsproxy : http://lab.crossincode.com/proxy/get/?num=%d&head=https
+testipurl : http://ip.chinaz.com/getip.aspx
+testipurl2 : http://ip.cn/
+proxiesfile : ../out/proxies.txt
+timeout : 3
+threadnum : 4
+weatherurl : http://www.sojson.com/open/api/weather/json.shtml?city=%s
+ipusls : ["http://ip.chinaz.com/getip.aspx"]
+ipdat : ../data/qqwry.dat
+owxlink : http://q18631322a.iok.la/?signature=e72198e318fb2ac0f6a3c81d5a3b4357e3adaa8b&echostr=2292380436266924142&timestamp=1503574028&nonce=1104466989
+wxlink : http://192.168.1.1:8001/?signature=e72198e318fb2ac0f6a3c81d5a3b4357e3adaa8b&echostr=2292380436266924142&timestamp=1503574028&nonce=1104466989
+#字符串可以写成多行，从第二行开始，必须有一个单空格缩进。换行符会被转为空格。多行字符串可以使用|保留换行符，也可以使用>折叠换行。
+textdata : <xml>
+ <ToUserName><![CDATA[toUser]]></ToUserName>
+ <FromUserName><![CDATA[fromUser]]></FromUserName>
+ <CreateTime>1503586446</CreateTime>
+ <MsgType><![CDATA[text]]></MsgType>
+ <Content><![CDATA[珠海]]></Content>
+ <FuncFlag>0</FuncFlag>
+ </xml>
+imagedata : <xml>
+ <ToUserName><![CDATA[toUser]]></ToUserName>
+ <FromUserName><![CDATA[fromUser]]></FromUserName>
+ <CreateTime>1348831860</CreateTime>
+ <MsgType><![CDATA[image]]></MsgType>
+ <PicUrl><![CDATA[this is a url]]></PicUrl>
+ <MediaId><![CDATA[media_id]]></MediaId>
+ <MsgId>1234567890123456</MsgId>
+ </xml>
+#Location_X 纬度,Location_Y 经度
+voicedata : <xml>
+ <ToUserName><![CDATA[toUser]]></ToUserName>
+ <FromUserName><![CDATA[fromUser]]></FromUserName>
+ <CreateTime>1357290913</CreateTime>
+ <MsgType><![CDATA[voice]]></MsgType>
+ <MediaId><![CDATA[media_id]]></MediaId>
+ <Format><![CDATA[Format]]></Format>
+ <MsgId>1234567890123456</MsgId>
+ </xml>
+locdata : <xml>
+ <ToUserName><![CDATA[toUser]]></ToUserName>
+ <FromUserName><![CDATA[fromUser]]></FromUserName>
+ <CreateTime>1351776360</CreateTime>
+ <MsgType><![CDATA[location]]></MsgType>
+ <Location_X>22.272921</Location_X>
+ <Location_Y>113.549634</Location_Y>
+ <Scale>20</Scale>
+ <Label><![CDATA[位置信息]]></Label>
+ <MsgId>1234567890123456</MsgId>
+ </xml> 
+
+# airline
+citycodes : ['YIE', 'AKU', 'AAT', 'NGQ', 'AKA', 'AQG', 'AOG', 'AVA', 'AYN', 'AEB', 'BSD', 'BAV', 'RLK', 'BHY', 'BJS', 'BFU', 'BFJ', 'BPL', 'NBS', 'CGQ', 'CGD', 'BPX', 'CSX', 'CIH', 'CZX', 'CHG', 'CTU', 'CYI', 'CIF', 'CKG', 'DLU', 'DLU', 'DLC', 'DDG', 'DQA', 'DAT', 'DAX', 'DAX', 'LUM', 'DEY', 'DIG', 'DGM', 'DOY', 'DNH', 'DSN', 'ERL', 'ENH', 'FUO', 'FUG', 'FYN', 'FOC', 'KOW', 'GOQ', 'GHN', 'LHK', 'GYS', 'CAN', 'KWL', 'KWE', 'GYU', 'HRB', 'HAK', 'HLD', 'HMI', 'HMI', 'HDG', 'HGH', 'HZG', 'HFE', 'HEK', 'HNY', 'HTN', 'HTN', 'HKG', 'HIA', 'HJJ', 'HUN', 'TXN', 'XAA', 'HYN', 'HET', 'HUZ', 'JGD', 'JMU', 'KNC', 'JGN', 'SWA', 'JIL', 'TNA', 'JIC', 'JDZ', 'JGS', 'JHG', 'JNG', 'JJN', 'JNZ', 'JUH', 'JIU', 'JZH', 'JXA', 'KJI', 'KGT', 'KHH', 'KHG', 'KHG', 'KRY', 'KNH', 'KCA', 'KRL', 'KMG', 'LHW', 'LXA', 'LCX', 'LIA', 'LYG', 'LLB', 'LJG', 'LNJ', 'LXI', 'LYI', 'LZY', 'HZH', 'LZH', 'LCX', 'LYA', 'LZO', 'MFM', 'MZG', 'LUM', 'NZH', 'MXZ', 'MXZ', 'MIG', 'OHE', 'MDG', 'NLT', 'KHN', 'NAO', 'NKG', 'NNG', 'NTG', 'NNY', 'NGB', 'PZI', 'SYM', 'HSN', 'JIQ', 'IQM', 'TAO', 'IQN', 'SHP', 'NDG', 'JJN', 'JUZ', 'RKZ', 'SYX', 'SHA', 'SHP', 'SWA', 'SHS', 'SHE', 'SZX', 'SJW', 'JJN', 'SYM', 'SZV', 'TCG', 'TXG', 'TPE', 'TTT', 'TYN', 'HYN', 'TVS', 'TCZ', 'TSN', 'THQ', 'TNH', 'TGO', 'TEN', 'TEN', 'TLQ', 'WXN', 'WEF', 'WEH', 'WNH', 'WNH', 'WNZ', 'WUA', 'WUH', 'WHU', 'HLH', 'URC', 'WUX', 'WUS', 'WUZ', 'XMN', 'SIA', 'XFN', 'DIG', 'XFN', 'XIC', 'XIL', 'XNT', 'ACX', 'XNN', 'JHG', 'XUZ', 'ENY', 'YNZ', 'YTY', 'YNJ', 'YNT', 'YBP', 'YIH', 'YIC', 'LDS', 'YIN', 'INC', 'YIN', 'YIW', 'LLF', 'UYN', 'YCU', 'YUS', 'YUS', 'DYG', 'ZQZ', 'YZY', 'ZHA', 'ZAT', 'CGO', 'HJJ', 'ZGN', 'ZHY', 'HSN', 'ZUH', 'ZUZ', 'ZYI']
+webxmlnamespace : http://WebXml.com.cn/
+airurl : http://ws.webxml.com.cn/webservices/DomesticAirline.asmx
+trainurl : http://ws.webxml.com.cn/WebServices/TrainTimeWebService.asmx
+translatorurl : http://fy.webxml.com.cn/webservices/EnglishChinese.asmx
+mobileurl : http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx
+traditionurl : http://ws.webxml.com.cn/WebServices/TraditionalSimplifiedWebService.asmx

@@ -7,7 +7,7 @@ from pprint import pprint
 
 class XmlHelper(object):
     def __init__(self):
-        print "xmlhelper"
+        pass
 
     #root
     def GetRootFromFile(self,filename):
@@ -68,12 +68,12 @@ class XmlHelper(object):
         xmlstr = f.GetFileContent()
         dicts = self.GetDictsByXStr(xmlstr,tagname)
         return dicts
-    
-    #从xml文本获取字典列表
-    def GetDictsByXStr(self,xmlstr,tagname):
+
+     #从xml文本获取字典列表
+    def GetDictsByXStr(self,xmlstr):
         xml = xml2dict.XML2Dict()
         r = xml.fromstring(xmlstr)
-        pprint(r)
+        #pprint(r)
         return r
         
 if __name__ == '__main__':

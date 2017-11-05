@@ -7,8 +7,9 @@ import sys
 import BaseHTTPServer
 import urlparse
 import urllib
+import traceback
 
-PORT = 8000
+PORT = 8001
 
 # 导入我们自己编写的application函数:
 #from hello import application
@@ -54,15 +55,21 @@ class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
          self.wfile.write(message)
 
 if __name__ == '__main__':
-    # $ python webhelper.py dir
-    if len(sys.argv) > 1 and sys.argv[1]=="dir":
-        Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-        httpd = SocketServer.TCPServer(("", PORT), Handler)
-    if len(sys.argv) > 1 and sys.argv[1]=="client":
-        httpd = BaseHTTPServer.HTTPServer(('0.0.0.0',PORT), WebRequestHandler)
-    else:
-        # 创建一个服务器，IP地址为空，端口是8000，处理函数是application:
-        httpd = make_server('', PORT, WebRequestHandler)
-    print "Serving HTTP on port ",PORT
-    # 开始监听HTTP请求:
-    httpd.serve_forever()
+    # socket.error: [Errno 125] Address already in use ??
+    try:
+        # $ python webhelper.py dir
+        if len(sys.argv) > 1 and sys.argv[1]=="dir":
+            Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+            httpd = SocketServer.TCPServer(("", PORT), Handler)
+        if len(sys.argv) > 1 and sys.argv[1]=="client":
+            httpd = BaseHTTPServer.HTTPServer(('0.0.0.0',PORT), WebRequestHandler)
+        else:
+            # 创建一个服务器，IP地址为空，端口是8000，处理函数是application:
+            httpd = make_server('', PORT, WebRequestHandler)
+        print "Serving HTTP on port ",PORT
+        # need to set the allow_reuse_address before binding.
+        httpd.allow_reuse_address = True
+        # 开始监听HTTP请求:
+        httpd.serve_forever()
+    except Exception, e:
+        print  'Error:',e.message,'\n',traceback.format_exc()

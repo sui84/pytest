@@ -16,7 +16,7 @@ import html
 import base64
 import json
 import socket
-import requests
+from tqdm import tqdm
 
 
 def GetFullUrl(url1,url2):
@@ -34,8 +34,15 @@ def GetDstPath(dstdir,dirfname):
     elif os.path.isfile(dstdir):
         dstfpath = dstdir
     return dstfpath
-        
+
+def SetToDict(keys):
+    # keys = {'a','b','c'} => {'a':[],'b':[],'c':[]}
+    value = []
+    d = dict.fromkeys(keys,value)
+    return d
+
 def StrToDict(dictstr):
+    #也适用于list字符串转换成list
     d = eval(a)
     return d
     
@@ -242,4 +249,9 @@ def RemoveDuplicate(l=['8','7','7','5']):
 def GetCurrentIP(url="http://ip.chinaz.com/getip.aspx"):
     r=requests.get(url)
     return r.text
+
+def Progressbar():
+    pbar = tqdm(["a", "b", "c", "d"])
+    for char in pbar:
+        pbar.set_description("Processing %s" % char)
 
