@@ -1,4 +1,4 @@
-#encoding=utf-8
+---7#encoding=utf-8
 import urlparse
 import os
 import urllib

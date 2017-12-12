@@ -32,6 +32,7 @@ def exception(logger):
     
 def create_logger():
     """
+    logging.basicConfig(filename='credentials.txt',level=logging.INFO)
     Creates a logging object and returns it
     """
     logger = logging.getLogger("testlogger")
