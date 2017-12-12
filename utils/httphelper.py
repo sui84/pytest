@@ -116,6 +116,30 @@ class HttpHelper(object):
         host,rest=urllib.splithost(rest)
         return host
 
+    def DownloadFile(self,url,ofile):
+        data = self.GetResponse(url)
+        fh=fhelper.FHelper(ofile)
+        fh.SaveBytesToFile(data)
+    
+    def GetDataWithProxy(self,url,user,pwd,proxy,data=None):
+        #proxy
+        proxystr = 'http://%s:%s@%s' % (user,pwd,proxy)
+        proxy = urllib2.ProxyHandler({'http':proxystr})
+        auth = urllib2.HTTPBasicAuthHandler()
+        opener = urllib2.build_opener(proxy,auth,urllib2.HTTPHandler)
+        urllib2.install_opener(opener)
+
+        if data != None:
+            #post
+            datastr = urllib.urlencode(data)
+            nurl = "%s?%s" % (url,datastr)
+            req = urllib2.Request(nurl,headers=self.headers,data=datastr)
+        else:
+            #get
+            req = urllib2.Request(url,headers=self.headers)
+        html = urllib2.urlopen(req)
+        return html.geturl(),html.read()
+
 if __name__ == '__main__':
     http=HttpHelper()
     x=xmlhelper.XmlHelper()
