@@ -6,6 +6,7 @@ _letter_cases = "abcdefghjkmnpqrstuvwxy" # 小写字母，去除可能干扰的i
 _upper_cases = _letter_cases.upper() # 大写字母
 _numbers = ''.join(map(str, range(3, 10))) # 数字
 init_chars = ''.join((_letter_cases, _upper_cases, _numbers))
+ASCII_CHARS = [ '#', '?', '%', '.', 'S', '+', '.', '*', ':', ',', '@']
 
 def create_validate_code(size=(120, 30),
                      chars="TEST",
@@ -129,17 +130,17 @@ def map_pixels_to_ascii_chars(self,image, range_width=25):
     """
 
     pixels_in_image = list(image.getdata())
-    pixels_to_chars = [self.ASCII_CHARS[pixel_value/range_width] for pixel_value in
+    pixels_to_chars = [ASCII_CHARS[pixel_value/range_width] for pixel_value in
             pixels_in_image]
 
     return "".join(pixels_to_chars)
 
 def ConvertToAscii(self,filename,new_width=200):
     image = Image.open(filename)
-    image = self.scale_image(image,new_width)
-    image = self.convert_to_grayscale(image)
+    image = scale_image(image,new_width)
+    image = convert_to_grayscale(image)
 
-    pixels_to_chars = self.map_pixels_to_ascii_chars(image)
+    pixels_to_chars = map_pixels_to_ascii_chars(image)
     len_pixels_to_chars = len(pixels_to_chars)
 
     image_ascii = [pixels_to_chars[index: index + new_width] for index in
