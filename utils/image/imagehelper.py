@@ -11,26 +11,7 @@ import pygame
 import StringIO
 #from tkinter import *
 import tkinter.font as tkFont  
-from wand.image import Image 
-'''
-    1 (1-bit pixels, black and white, stored with one pixel per byte)
-    L (8-bit pixels, black and white)
-    P (8-bit pixels, mapped to any other mode using a color palette)
-    RGB (3x8-bit pixels, true color)
-    RGBA (4x8-bit pixels, true color with transparency mask)
-    CMYK (4x8-bit pixels, color separation)
-    YCbCr (3x8-bit pixels, color video format)
-    I (32-bit signed integer pixels)
-    F (32-bit floating point pixels)
-    
-	im.resize((128, 128))                     #
-	im.rotate(45)                             #逆时针旋转 45 度角。
-	im.transpose(Image.FLIP_LEFT_RIGHT)       #左右对换。
-	im.transpose(Image.FLIP_TOP_BOTTOM)       #上下对换。
-	im.transpose(Image.ROTATE_90)             #旋转 90 度角。
-	im.transpose(Image.ROTATE_180)            #旋转 180 度角。
-	im.transpose(Image.ROTATE_270)            #旋转 270 度角。
-'''
+
 
 class ImageHelper(object):
     def __init__(self):
@@ -41,7 +22,12 @@ class ImageHelper(object):
         self.outfile = 'D:\\temp\\test2.bmp'
         self.pngfile = 'D:\\temp\\test.png'
         pass
-    
+
+    def ImageToGray2(self,ifile,ofile):   
+        im=Image.open(ifile)
+        im2=im.convert("L")
+        im2.save(ofile)
+	
     def ImageToGray(self,ifile,ofile):
         with Image(filename=ifile,resolution=(300,300)) as img:
             img.type = 'grayscale'    
@@ -124,20 +110,26 @@ class ImageHelper(object):
 
     def GetImageInfo(self,fpath):
         img=Image.open(fpath)
-        print "format:%s,size:%s,mode:%s,dpi:%s,compression:%s" % (img.format, str(img.size), img.mode, img.info.get('dpi'), img.info.get('compression'))
+        size = img.size
+        dpi = img.info.get('dpi')
+        print "format:%s,size:%s pixels ,mode:%s,dpi:%s,compression:%s" % (img.format, str(img.size), img.mode, dpi, img.info.get('compression'))
+        print "%s*%s inch" % (size[0]*1.0/dpi[0],size[1]*1.0/dpi[1])
+        print "%s*%s cm" % (size[0]*2.54/dpi[0],size[1]*2.54/dpi[1])
+        print "band:%s , box:%s" % (img.getbands(),img.getbbox())
         with open(fpath, 'rb') as f:
             tags = exifread.process_file(f)    
-            infostr = u"经度:%s,纬度:%s,照相机:%s,时间:%s" % (tags.get('GPS GPSLongitude'),tags.get('GPS GPSLatitude'),tags.get('Image Software'),tags.get('EXIF DateTimeOriginal'))
-            print infostr
+            if len(tags)>0:
+                infostr = u"经度:%s,纬度:%s,照相机:%s,时间:%s" % (tags.get('GPS GPSLongitude'),tags.get('GPS GPSLatitude'),tags.get('Image Software'),tags.get('EXIF DateTimeOriginal'))
+                print infostr
+                # GPS
+                print tags.get('GPS GPSLatitude'),tags.get('GPS GPSLongitude')
+                wdu = self.ParseGps(str(tags.get('GPS GPSLatitude')).lstrip('[').rstrip(']'))
+                jdu = self.ParseGps(str(tags.get('GPS GPSLongitude')).lstrip('[').rstrip(']'))
+                print "wdu",wdu,"jdu",jdu
             
             for tag in tags.keys():
                 if tag not in ('JPEGThumbnail', 'TIFFThumbnail', 'Filename', 'EXIF MakerNote'):
                     print "Key: %s, value %s" % (tag, tags[tag])
-            # GPS
-            print tags.get('GPS GPSLatitude'),tags.get('GPS GPSLongitude')
-            wdu = self.ParseGps(str(tags.get('GPS GPSLatitude')).lstrip('[').rstrip(']'))
-            jdu = self.ParseGps(str(tags.get('GPS GPSLongitude')).lstrip('[').rstrip(']'))
-            print "wdu",wdu,"jdu",jdu
 
 
     def ParseGps(self,titude):
