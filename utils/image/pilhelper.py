@@ -41,6 +41,10 @@ import os
     PIL.Image.composite(im1,im2,mask)
     这三个方法都属于图片的合成或者融合。都要求im1和im2的mode和size要一致，alpha代表图片占比的意思，而mask是mode可以为”1”,”L”或者”RGBA”的size和im1、im2一致的。
 
+    绘制直线
+    draw.line( ( (0,0), (width-1, height-1)), fill=255)
+    绘制圆
+    draw.arc( (0, 0, width-1, height-1), 0, 360, fill=255)
 '''
 
 #图片的基本参数获取
@@ -48,6 +52,7 @@ try:
     from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 except ImportError:
     import Image, ImageDraw, ImageFont, ImageEnhance
+
 
 def trans_parency2(ifile,ofile,alpha=128):
     #half alpha
@@ -61,6 +66,25 @@ def trans_parency(ifile,ofile, factor = 0.7 ):
     img_blender = Image.new('RGBA', img.size, (0,0,0,0))  
     img = Image.blend(img_blender, img, factor)  
     img.save(ofile) 
+
+def image_enhance(ifile,factor=2.0):
+    im=Image.open(ifile)
+    #亮度增强
+    brightness = ImageEnhance.Brightness(im)
+    bright_img = brightness.enhance(factor)
+    bright_img.show()
+    #图像尖锐化
+    sharpness = ImageEnhance.Sharpness(im)
+    sharp_img = sharpness.enhance(factor)
+    sharp_img.show()
+    #对比度增强
+    contrast = ImageEnhance.Contrast(im)
+    contrast_img = contrast.enhance(factor)
+    contrast_img.show()
+    #色彩增强
+    color = ImageEnhance.Color(im)
+    color_img = color.enhance(factor)
+    color_img.show()
 
 def image_filter(ifile,ofile):
     '''
@@ -97,7 +121,7 @@ def trans_bg(ifile,ofile):
 def change_bgcolor(ifile,ofile):
     im = Image.open(ifile)
     x,y=im.size
-    p=Image.new('RGBA',im.size,(255,0,0))   # (255,255,255)白底   (0,0,0) 黑底  (67,142,219)(0,191,243) 蓝底  (255,0,0)  红底
+    p=Image.new('RGBA',im.size,(67,142,219))   # (255,255,255)白底   (0,0,0) 黑底  (67,142,219)(0,191,243) 蓝底  (255,0,0)  红底
     p.paste(im,(0,0,x,y),im)
     p.save(ofile)
     
@@ -188,11 +212,12 @@ def text_watermark(img, text, out_file=r"d:\temp\test4.jpg", angle=23, opacity=0
 
 
 #等比例压缩图片
-def resizeImg(img, dst_w=0, dst_h=0, qua=85):
+def resizeImg(ifile,ofile, dst_w=0, dst_h=0, qua=85):
     '''
     只给了宽或者高，或者两个都给了，然后取比例合适的
     如果图片比给要压缩的尺寸都要小，就不压缩了
     '''
+    im = Image.open(ifile)
     ori_w, ori_h = im.size
     widthRatio = heightRatio = None
     ratio = 1
@@ -221,8 +246,8 @@ def resizeImg(img, dst_w=0, dst_h=0, qua=85):
         newWidth = ori_w
         newHeight = ori_h
 
-    im.resize((newWidth,newHeight),Image.ANTIALIAS).save("test5.jpg", "JPEG", quality=qua)
-    print u'等比压缩完成'
+    im.resize((newWidth,newHeight),Image.ANTIALIAS).save(ofile, "PNG", quality=qua)
+    print u'等比压缩完成',ifile
 
     '''
     Image.ANTIALIAS还有如下值：
@@ -231,6 +256,13 @@ def resizeImg(img, dst_w=0, dst_h=0, qua=85):
     BICUBIC:cubic spline interpolation in a 4x4 environment
     ANTIALIAS:best down-sizing filter
     '''
+def resizeFolderImg(idir,odir, dst_w=0, dst_h=0, qua=85):
+    files=os.listdir(idir)
+    for f in files:
+        ifile = os.path.join(idir,f)
+        if os.path.isfile(ifile):
+            ofile = os.path.join(odir,f)
+            resizeImg(ifile,ofile, dst_w, qua)
 
 #裁剪压缩图片
 def clipResizeImg(im, dst_w, dst_h, qua=95):
@@ -278,9 +310,12 @@ def clipResizeImg(im, dst_w, dst_h, qua=95):
 
 if __name__ == "__main__":
     #trans_parency(r'd:\temp\zj.jpg',r'd:\temp\zj3.png',factor=0.9)
-    trans_bg(r'd:\temp\zj.jpg',r'd:\temp\zj.png')
+    #trans_bg(r'd:\temp\zj.jpg',r'd:\temp\zj.png')
     #change_bgcolor(r'd:\temp\zj.png',r'd:\temp\zj2.png')
     #merge_image('RGB',[r"D:\Temp\test0.jpg",r"D:\Temp\test1.jpg",r"D:\Temp\test2.jpg"],r"d:\temp\test.jpg")
+     #image 对象
+    #resizeImg(r'd:\temp\bq1.jpg',r'd:\temp\xl1.jpg', dst_w=200, qua=99)
+    resizeFolderImg(r'd:\temp\bq',r'd:\temp\bq\out', dst_w=200, qua=99)
     '''
     主要是实现功能， 代码没怎么整理
     '''
@@ -298,8 +333,7 @@ if __name__ == "__main__":
     im = Image.open(r'd:\temp\test.jpg')  #image 对象
     text_watermark(im, 'Orangleliu', r'd:\temp\test3.png')
     
-    im = Image.open('test.jpg')  #image 对象
-    resizeImg(im, dst_w=100, qua=85)
+
 
     im = Image.open('test.jpg')  #image 对象
     clipResizeImg(im, 100, 200)

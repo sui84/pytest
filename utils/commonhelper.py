@@ -1,4 +1,4 @@
----7#encoding=utf-8
+#encoding=utf-8
 import urlparse
 import os
 import urllib
@@ -130,7 +130,7 @@ def GetPadString(num,len):
     nnum=str(num).zfill(len)
     return nnum
 
-def CheckDir(args, dirname, filenames ):
+def CheckDir(dirname, filenames ):
     print 'Directory',dirname
     for filename in filenames:
         #print ' File',filename
