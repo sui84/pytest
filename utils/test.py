@@ -12,8 +12,6 @@ if __name__ == '__main__':
         print time.ctime(), 'Error:',e.message,'\n',traceback.format_exc()
 
 
-
-
 import time
 from selenium import webdriver
 import selenium.webdriver.support.ui as ui

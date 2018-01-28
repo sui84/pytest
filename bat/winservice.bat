@@ -1,1 +1,0 @@
-sc create jenkins binpath= "E:\MyProjects\Github\pytest\pytest\bat\jenkins.bat" displayname= "jenkins" depend= Tcpip start= auto  
