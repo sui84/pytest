@@ -75,8 +75,11 @@ def save_domain(selsql,updsql,updsql2,type):
             id = result[0]
             if type=="ip_info":
                 info,domain  = ip_info(result[1])
-                sql = updsql % (domain,pymysql.escape_string(info),id)
-                sh.ExecNonQuery(sql)
+                if info==u'查询频率过高，请稍候查询':
+                        break
+                elif len(info)>0 or len(domain)>0:
+                    sql = updsql % (domain,pymysql.escape_string(info),id)
+                    sh.ExecNonQuery(sql)
             elif type=="domain_info":
                 ip,info = domain_info(result[1])
                 if len(ip)>0:
@@ -103,7 +106,7 @@ def domain_db():
     sh.ExecNonQuery(sql)
 
     # get ip info  concat(ifnull(info,''),'%s')
-    selsql = "SELECT id,ip FROM domain WHERE length(ip)>0 and info is null"
+    selsql = "SELECT id,ip FROM domain WHERE length(ip)>0 and ipinfo is null"
     updsql = "update domain set domain='%s',ipinfo='%s'  where id=%d"
     save_domain(selsql,updsql,'',"ip_info")
 
