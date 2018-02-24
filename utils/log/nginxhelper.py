@@ -4,7 +4,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 sys.path.append('..')
 import arrow
-from utils import cmdhelper,setting
+from utils import setting
 from utils.db import sqlhelper
 import time
 import re
@@ -13,6 +13,8 @@ import traceback
 import chardet
 import pprint
 import pymysql
+import os
+import shutil
 
 smbserver = setting.YAMLDATA.get('smbserver')
 #sqlserverdb = setting.YAMLDATA.get('sqlserverdb')
@@ -101,19 +103,21 @@ def nginx_info():
     updsql = "update url set decode='%s',urlkword='%s',type='%s',bodydecode='%s',bodykword='%s',cookiedecode='%s',cookiekword='%s' where id=%d"
     request_info(strsql,updsql)
 
-def nginx_log():
+def nginx_log(logdir):
     # move nginx.log to bk/nginxYYYYMMDDHHmmss.log
     # mv /mnt/sda1/temp/nginx.log /mnt/sda1/temp/bk/nginx20180120221100.log
     # restart nginx
     # /mnt/sda1/opkg/etc/init.d/nginx restart
     # write nginx.log to sql server
     # logparser -i:CSV -iHeaderFile:"D:\TEMP\nginx.header" -headerRow:OFF -o:SQL  "SELECT * into Nginx from D:\TEMP\nginx20180120221100.log" -server:localhost\SQLEXPRESS -database:log -driver:"SQL Server" -username:sa -password:P@ssw0rd -createTable:OFF
+    from utils import cmdhelper
+    '''
     host,user,pwd,smbdir,srcf,dstf = smbserver.get('host'),smbserver.get('user'),smbserver.get('pwd'),smbserver.get('smbdir'),smbserver.get('srcf'),smbserver.get('dstf')
     dt = arrow.now().format('YYYYMMDDHHmmss')
     logfile = "/temp/bk/nginx%s.log" % dt
     cmdhelper.SSHExecCmd(host,user,pwd,["mv %s /mnt/sda1%s" % (srcf,logfile) ,"/mnt/sda1/opkg/etc/init.d/nginx restart"])
     cmdhelper.GetFile(host,user,pwd,smbdir,logfile,dstf % dt)
-    '''
+
     to sql server
     server,user,pwd,logdb=sqlserverdb.get('server'),sqlserverdb.get('user'),sqlserverdb.get('pwd'),sqlserverdb.get('logdb')
     cmdstr=r'logparser -i:CSV -iHeaderFile:"D:\TEMP\nginx.header" -headerRow:OFF -o:SQL  "SELECT * into Nginx from %s" -server:%s -database:%s -driver:"SQL Server" -username:%s -password:%s -createTable:OFF'\
@@ -122,12 +126,26 @@ def nginx_log():
     cmdhelper.ExecCmd("cd C:\Program Files (x86)\Log Parser 2.2")
     print cmdhelper.ExecCmd(cmdstr)
     '''
-    nginx_db(dt)
+    dt = arrow.now().format('YYYYMMDDHHmmss')
+    cmdstr = r"move /Y P:\opt\var\log\nginx\host.access.log %s\nginx%s.log" % (logdir,dt)
+    print cmdhelper.ExecCmd(cmdstr)
 
+def logfoldere_db(logdir):
+    files=os.listdir(logdir)
+    for f in files:
+        ifile = os.path.join(logdir,f)
+        if os.path.isfile(ifile) and 'nginx' in f:
+            logfile_db(ifile)
+            ofile = os.path.join(logdir,'bk',f)
+            shutil.copyfile(ifile,ofile)
+            os.remove(ifile)
 
-def nginx_db(findex=''):
-    sql = r"LOAD DATA LOCAL INFILE  'D:\\TEMP\\log\\nginx%s.log' INTO TABLE nginx FIELDS  terminated by ',' enclosed by '\"' LINES TERMINATED BY '\n' (remote_addr,time_local,host,request,status,body_bytes_sent,http_referer,http_user_agent,request_body,http_cookie,remote_user,http_x_forwarded_for)" % findex
+def logfile_db(ifile):
+    sql = r"LOAD DATA LOCAL INFILE  '%s' INTO TABLE nginx FIELDS  terminated by ',' enclosed by '\"' LINES TERMINATED BY '\n' (remote_addr,time_local,host,request,status,body_bytes_sent,http_referer,http_user_agent,request_body,http_cookie,remote_user,http_x_forwarded_for)" % ifile.replace("\\","\\\\")
     sh.ExecNonQuery(sql)
+
+def nginx_db(logdir):
+    logfoldere_db(logdir)
     sql = 'call nginx_url'
     sh.ExecNonQuery(sql)
 
@@ -150,12 +168,10 @@ def out_kword():
             f.write(str(line)+'\n')
 
 if __name__ == '__main__':
-    if len(sys.argv)>0 and sys.argv[1]=="nginxlog":
-        nginx_log()
+    if len(sys.argv)>0 and sys.argv[1]=="nginx_db":
+        nginx_db(r'\\192.168.1.1\mnt\sda1\opt\var\log\nginx')
+    elif len(sys.argv)>0 and sys.argv[1]=="nginx_info":
         nginx_info()
-        out_kword()
     else:
-        #nginx_log()
-        #nginx_db()
-        #nginx_info()
-        out_kword()
+        pass
+        #out_kword()
