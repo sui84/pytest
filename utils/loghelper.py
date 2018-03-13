@@ -1,17 +1,10 @@
 #encoding=utf-8
-import functools
 import logging
-import confhelper
 
+#LOGPATH = '/storage/emulated/0/qpython/scripts/log.txt'
+LOGPATH = r"d:\temp\log.txt"
     
 def exception(logger):
-    """
-    A decorator that wraps the passed in function and logs 
-    exceptions should one occur
- 
-    @param logger: The logging object
-    """
- 
     def decorator(func):
  
         def wrapper(*args, **kwargs):
@@ -30,19 +23,11 @@ def exception(logger):
     return decorator
     
     
-def create_logger():
-    """
-    logging.basicConfig(filename='credentials.txt',level=logging.INFO)
-    Creates a logging object and returns it
-    """
+def create_logger(logpath):
     logger = logging.getLogger("testlogger")
     logger.setLevel(logging.INFO)
-    
-    conf = confhelper.ConfHelper()
-    logpath = conf.GetConfig("filepath","logpath")
-    # create the logging file handler
+
     fh = logging.FileHandler(logpath)
- 
     fmt = '[%(asctime)s - %(name)s - %(levelname)s %(process)d %(processName)s %(thread)d %(threadName)s] %(message)s'
     formatter = logging.Formatter(fmt)
     fh.setFormatter(formatter)
@@ -51,7 +36,7 @@ def create_logger():
     logger.addHandler(fh)
     return logger
 
-logger = create_logger()
+logger = create_logger(LOGPATH)
 @exception(logger)
 def zero_divide(i,j):
     i/j
