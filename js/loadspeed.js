@@ -2,16 +2,16 @@
 
 var page = require('webpage').create(),
     system = require('system'),
-    t, address;
+    t, add;
 
 if (system.args.length === 1) {
     console.log('Usage: loadspeed.js <some URL>');
     phantom.exit(1);
 } else {
     t = Date.now();
-    address = system.args[1];
+    add = system.args[1];
 	phantom.outputEncoding="gbk";
-    page.open(address, function (status) {
+    page.open(add, function (status) {
         if (status !== 'success') {
             console.log('FAIL to load the address');
         } else {

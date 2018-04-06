@@ -21,6 +21,7 @@ class TimeHelper(object):
         return d
 
     def GetDateDiff(self,date1, date2):
+
         return abs(date2-date1).days
 
     def GetYearMonths(self,offset):

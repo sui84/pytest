@@ -1,0 +1,28 @@
+Sat Mar 10 20:44:00 2018 Error: 'module' object has no attribute 'resizeFoldersImg' 
+Traceback (most recent call last):
+  File "E:\MyProjects\Github\kivytest\main.py", line 28, in resizeimg
+    pilhelper.resizeFoldersImg(setting.YAMLDATA.get('biaoqingpath'), dst_w=200, dst_h=0, qua=100)
+AttributeError: 'module' object has no attribute 'resizeFoldersImg'
+
+[2018-03-10 20:48:37,990 - testlogger - INFO 8496 MainProcess 10936 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C04EE8>),kwargs={}
+[2018-03-10 20:48:37,990 - testlogger - INFO 8496 MainProcess 10936 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C04EE8>),kwargs={}
+[2018-03-10 20:49:37,058 - testlogger - INFO 9820 MainProcess 12000 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C3CE80>),kwargs={}
+[2018-03-10 20:49:37,058 - testlogger - INFO 9820 MainProcess 12000 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C3CE80>),kwargs={}
+[2018-03-10 20:49:37,058 - testlogger - ERROR 9820 MainProcess 12000 MainThread] exception : funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C3CE80>),kwargs={}
+Traceback (most recent call last):
+  File "E:\MyProjects\Github\kivytest\utils\loghelper.py", line 16, in wrapper
+    return func(*args, **kwargs)
+  File "E:\MyProjects\Github\kivytest\main.py", line 32, in resizeimg
+    pilhelper.resizeFoldersImg(setting.YAMLDATA.get('biaoqingpath'), dst_w=200, dst_h=0, qua=100)
+AttributeError: 'module' object has no attribute 'resizeFoldersImg'
+[2018-03-10 20:49:37,058 - testlogger - ERROR 9820 MainProcess 12000 MainThread] exception : funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C3CE80>),kwargs={}
+Traceback (most recent call last):
+  File "E:\MyProjects\Github\kivytest\utils\loghelper.py", line 16, in wrapper
+    return func(*args, **kwargs)
+  File "E:\MyProjects\Github\kivytest\main.py", line 32, in resizeimg
+    pilhelper.resizeFoldersImg(setting.YAMLDATA.get('biaoqingpath'), dst_w=200, dst_h=0, qua=100)
+AttributeError: 'module' object has no attribute 'resizeFoldersImg'
+[2018-03-10 21:12:26,003 - testlogger - INFO 10340 MainProcess 4384 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C0CE80>),kwargs={}
+[2018-03-10 21:12:26,003 - testlogger - INFO 10340 MainProcess 4384 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C0CE80>),kwargs={}
+[2018-03-10 21:13:58,296 - testlogger - INFO 8764 MainProcess 11596 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C44E80>),kwargs={}
+[2018-03-10 21:13:58,296 - testlogger - INFO 8764 MainProcess 11596 MainThread] funcname=resizeimg,args=(<Screen name='RstDocument'>, <kivy.uix.button.Button object at 0x0000000003C44E80>),kwargs={}

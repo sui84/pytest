@@ -6,6 +6,7 @@ import sys
 sys.path.append("..")
 import sqlite3
 import pyodbc
+import pprint
 
 
 class SqlHelper(object):
@@ -58,7 +59,7 @@ class SqlHelper(object):
 
     def ExecNonQuery(self,sql):
         #执行并提交数据，不返回
-        print sql
+        pprint.pprint( sql)
         cur = self.__GetConnect()
         cur.execute(sql)
         self.conn.commit()

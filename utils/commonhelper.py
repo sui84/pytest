@@ -255,3 +255,19 @@ def Progressbar():
     for char in pbar:
         pbar.set_description("Processing %s" % char)
 
+'''
+sys.stdout重定向
+将一个可写对象(如file-like对象)赋给sys.stdout，可使随后的print语句输出至该对象。重定向结束后，应将sys.stdout恢复最初的缺省值，即标准输出。
+
+简单示例如下：
+
+import sys
+savedStdout = sys.stdout  #保存标准输出流
+with open('out.txt', 'w+') as file:
+    sys.stdout = file  #标准输出重定向至文件
+    print 'This message is for file!'
+
+sys.stdout = savedStdout  #恢复标准输出流
+print 'This message is for screen!'
+'''
+

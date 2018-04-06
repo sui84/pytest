@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>海友网企业全国分布</title>
+</head>
+
+<body>
+
+<div id="main" style="width: 1200px;height:1200px;"></div>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/echarts-all-3.js"></script>
+<script type="text/javascript" src="../js/china.js"></script>
+ <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    
+    <script type="text/javascript">
+	
+
+		var cards = [];
+	
+	   $.ajax({
+		   url: "../json/cards.json",//json文件位置
+		   type: "GET",//请求方式为get
+		   dataType: "json", //返回数据格式为json
+		   success: function(data) {//请求成功完成后要执行的方法 
+			   //each循环 使用$.each方法遍历返回的数据date
+			   $.each(data ,function(i, item) {
+					cards.push({
+						name: item.name,
+						value: [item.lng, item.lat]
+				});
+				
+				loaddata(cards) 
+			   })
+		   }
+		})
+
+	
+	
+
+	function loaddata(data){
+		//初始化
+		var myChart = echarts.init(document.getElementById('main'));
+		//myChart.showLoading();//加载数据前显示的动画效果
+		/*
+		res.push({
+			name: "白玉路346号",
+			value: [121.423744, 31.23829]   //这里concat后面的值就是value，这里统一设置成1。
+		});
+		res.push({
+			name: "新民路城南工商所对面巷子（ 南苑菜市旁边 ）",
+			value: [106.577573, 31.082472]   //这里concat后面的值就是value，这里统一设置成1。
+		});
+		*/
+		//console.log(data)
+		var chart = echarts.init(document.getElementById('main'));   //这里是主体的初始化echart方法，与上面的简单demo类似。
+		chart.setOption({
+		backgroundColor: '#404a59',
+		title: {
+			text: '海友网企业全国分布',
+			subtext: 'data from cmfish',
+			sublink: 'http://www.cmfish.com',
+			x: 'center',
+			textStyle: {
+				color: '#fff'
+			}
+		},
+		legend: {
+			orient: 'vertical',
+			y: 'bottom',
+			x: 'right',
+			data: ['服务网点'],
+			textStyle: {
+				color: '#fff'
+			}
+		},
+		//地图坐标系必备的配置，具体的含义可以参考api，索性都是中文的，没有什么阅读障碍。
+		geo: {
+			silent:false,
+			map: 'china',
+			label: {
+				emphasis: {
+					show: false
+				}
+			},
+			itemStyle: {
+				hoverAnimation:false,
+				normal: {
+					areaColor: '#323c48',
+					borderColor: '#000'
+				},
+				emphasis: {
+					areaColor: '#2a333d',
+					opacity:0
+				}
+			}
+		},
+		series: [
+			{
+				name: '企业',
+				type: 'scatter',
+				coordinateSystem: 'geo',    //参照系：之前设置的geo。
+				//这里是api数据接受的的地方
+				data:data,
+				symbolSize: 5,    //散点半径
+				label: {
+					normal: {
+						formatter: '{b}',
+						show: false
+					},
+					emphasis: {
+						show: false
+					}
+				},
+				hoverAnimation:false,
+				silent:false,
+				animation:false,
+				z:3
+			}
+		]
+		});
+}
+
+    
+//myChart.setOption(option)
+      
+    </script>
+
+</body>
+</html>
