@@ -9,15 +9,21 @@
 
 <div id="main" style="width: 1200px;height:1200px;"></div>
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<!--http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js-->
 <script type="text/javascript" src="../js/echarts-all-3.js"></script>
 <script type="text/javascript" src="../js/china.js"></script>
  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     
     <script type="text/javascript">
-	
 
-		var cards = [];
-	
+
+	   var cards_arr= new Array()
+
+       for (var i = 0; i < 7; i++) {
+            cards_arr[i] = []
+        }
+
+
 	   $.ajax({
 		   url: "../json/cards.json",//json文件位置
 		   type: "GET",//请求方式为get
@@ -25,18 +31,16 @@
 		   success: function(data) {//请求成功完成后要执行的方法 
 			   //each循环 使用$.each方法遍历返回的数据date
 			   $.each(data ,function(i, item) {
-					cards.push({
+					cards_arr[item.typeid-1].push({
 						name: item.name,
 						value: [item.lng, item.lat]
 				});
 				
-				loaddata(cards) 
+				loaddata(cards_arr)
 			   })
 		   }
 		})
 
-	
-	
 
 	function loaddata(data){
 		//初始化
@@ -65,26 +69,32 @@
 				color: '#fff'
 			}
 		},
+		tooltip: {
+        trigger: 'item'
+      },
 		legend: {
 			orient: 'vertical',
-			y: 'bottom',
-			x: 'right',
-			data: ['服务网点'],
+			x: 'left',
+			data: ['生产厂商','进出口商','代理商','店铺','繁殖','个人','其他'],
 			textStyle: {
-				color: '#fff'
+				color: 'orange'
 			}
+
 		},
 		//地图坐标系必备的配置，具体的含义可以参考api，索性都是中文的，没有什么阅读障碍。
 		geo: {
 			silent:false,
 			map: 'china',
 			label: {
+			    normal: {
+                    show: false
+                },
 				emphasis: {
-					show: false
+					show: true
 				}
 			},
 			itemStyle: {
-				hoverAnimation:false,
+				hoverAnimation:true,
 				normal: {
 					areaColor: '#323c48',
 					borderColor: '#000'
@@ -97,22 +107,148 @@
 		},
 		series: [
 			{
-				name: '企业',
+				name: '生产厂商',
 				type: 'scatter',
 				coordinateSystem: 'geo',    //参照系：之前设置的geo。
 				//这里是api数据接受的的地方
-				data:data,
-				symbolSize: 5,    //散点半径
+				data: data[0],
+				symbolSize: 10,    //散点半径
 				label: {
 					normal: {
 						formatter: '{b}',
 						show: false
 					},
 					emphasis: {
-						show: false
+						show: true
 					}
 				},
-				hoverAnimation:false,
+				hoverAnimation:true,
+				silent:false,
+				animation:false,
+				z:3
+			},
+			{
+				name: '进出口商',
+				type: 'scatter',
+				coordinateSystem: 'geo',    //参照系：之前设置的geo。
+				//这里是api数据接受的的地方
+				data:data[1],
+				symbolSize: 10,    //散点半径
+				label: {
+					normal: {
+						formatter: '{b}',
+						show: false
+					},
+					emphasis: {
+						show: true
+					}
+				},
+				hoverAnimation:true,
+				silent:false,
+				animation:false,
+				z:3
+			},
+			{
+				name: '代理商',
+				type: 'scatter',
+				coordinateSystem: 'geo',    //参照系：之前设置的geo。
+				//这里是api数据接受的的地方
+				data:data[2],
+				symbolSize: 10,    //散点半径
+				label: {
+					normal: {
+						formatter: '{b}',
+						show: false
+					},
+					emphasis: {
+						show: true
+					}
+				},
+				hoverAnimation:true,
+				silent:false,
+				animation:false,
+				z:3
+			},
+			{
+				name: '店铺',
+				type: 'scatter',
+				coordinateSystem: 'geo',    //参照系：之前设置的geo。
+				//这里是api数据接受的的地方
+				data:data[3],
+				symbolSize: 10,    //散点半径
+				label: {
+					normal: {
+						formatter: '{b}',
+						show: false
+					},
+					emphasis: {
+						show: true
+					}
+				},
+				hoverAnimation:true,
+				silent:false,
+				animation:false,
+				z:3
+			},
+			{
+				name: '繁殖',
+				type: 'scatter',
+				coordinateSystem: 'geo',    //参照系：之前设置的geo。
+				//这里是api数据接受的的地方
+				data:data[4],
+				symbolSize: 10,    //散点半径
+				label: {
+					normal: {
+						formatter: '{b}',
+						show: false
+					},
+					emphasis: {
+						show: true
+					}
+				},
+				hoverAnimation:true,
+				silent:false,
+				animation:false,
+				z:3
+			},
+			{
+				name: '个人',
+				type: 'scatter',
+				coordinateSystem: 'geo',    //参照系：之前设置的geo。
+				//这里是api数据接受的的地方
+				data:data[5],
+				symbolSize: 10,    //散点半径
+				label: {
+					normal: {
+						formatter: '{b}',
+						show: false
+					},
+					emphasis: {
+						show: true
+					}
+				},
+				hoverAnimation:true,
+				silent:false,
+				animation:false,
+				z:3
+			},
+			{
+				name: '其他',
+				type: 'scatter',
+				coordinateSystem: 'geo',    //参照系：之前设置的geo。
+				//这里是api数据接受的的地方
+				data:data[6],
+				symbolSize: 10,    //散点半径
+				label: {
+					normal: {
+						formatter: '{b}',
+						show: false
+					},
+					emphasis: {
+						show: true
+					}
+				},
+				hoverAnimation:true,
 				silent:false,
 				animation:false,
 				z:3

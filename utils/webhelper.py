@@ -19,6 +19,7 @@ def application(environ, start_response):
 
 class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
+        print 'hello'
         parsed_path = urlparse.urlparse(self.path)
         message_parts = [  #建立一个想要返回的列表
                 'CLIENT VALUES:',    #客户端信息

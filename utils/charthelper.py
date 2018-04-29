@@ -25,5 +25,6 @@ def getlnglat(address):
      temp = json.loads(temp.read())
      return temp
 
+
 if __name__ == '__main__':
     pass
