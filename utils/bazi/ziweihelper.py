@@ -23,8 +23,8 @@ GongWei = (u"命宫",u"兄弟宫",u"夫妻宫",u"子女宫",u"财帛宫",u"疾�
 NaYin = {u'甲子':u'海中金',u'乙丑':u'海中金',u'甲午':u'沙中金',u'乙未':u'沙中金'
          ,u'丙寅':u'炉中火',u'丁卯':u'炉中火',u'丙申':u'山下火',u'丁酉':u'山下火'
          ,u'戊辰':u'大林木',u'己巳':u'大林木',u'戊戌':u'平地木',u'己亥':u'平地木'
-         ,u'庚午':u'路旁土',u'辛未':u'路旁土',u'甲午':u'壁上土',u'乙未':u'壁上土'
-         ,u'壬申':u'剑锋金',u'癸酉':u'剑锋金',u'庚子':u'金箔金',u'癸卯':u'金箔金'
+         ,u'庚午':u'路旁土',u'辛未':u'路旁土',u'庚子':u'壁上土',u'辛丑':u'壁上土'
+         ,u'壬申':u'剑锋金',u'癸酉':u'剑锋金',u'入寅':u'金箔金',u'癸卯':u'金箔金'
          ,u'甲戌':u'山头火',u'乙亥':u'山头火',u'甲辰':u'覆灯火',u'乙巳':u'覆灯火'
          ,u'丙子':u'涧下水',u'丁丑':u'涧下水',u'丙午':u'天河水',u'丁未':u'天河水'
          ,u'戊寅':u'城头土',u'己卯':u'城头土',u'戊申':u'大驿土',u'己酉':u'大驿土'
@@ -32,12 +32,57 @@ NaYin = {u'甲子':u'海中金',u'乙丑':u'海中金',u'甲午':u'沙中金',u'
          ,u'壬午':u'杨柳木',u'癸未':u'杨柳木',u'壬子':u'桑柘木',u'癸丑':u'桑柘木'
          ,u'甲申':u'泉中水',u'乙酉':u'泉中水',u'甲寅':u'大溪水',u'乙卯':u'大溪水'
          ,u'丙戌':u'屋上土',u'丁亥':u'屋上土',u'丙辰':u'沙中土',u'丁巳':u'沙中土'
-         ,u'戊子':u'霹雳火',u'己丑':u'霹雳火',u'戊午':u'天上火',u'戊午':u'天上火'
+         ,u'戊子':u'霹雳火',u'己丑':u'霹雳火',u'戊午':u'天上火',u'己未':u'天上火'
          ,u'庚寅':u'松柏木',u'辛卯':u'松柏木',u'庚申':u'石榴木',u'辛酉':u'石榴木'
          ,u'壬辰':u'长流水',u'癸巳':u'长流水',u'壬戌':u'大海水',u'癸亥':u'大海水'}
 WhJu = {u"火":u"火六局",u"土":u"土五局",u"水":u"水二局",u"木":u"木三局",u"金":u"金四局"}
 WhJuIndex = {u"火":6,u"土":5,u"水":2,u"木":3,u"金":4}
 
+CSXingYao = [u"长生",u"沐浴",u"冠带",u"临官",u"帝旺",u"衰",u"病",u"死",u"墓",u"绝",u"胎",u"养"]
+TSXingYao = [u"太岁",u"晦气",u"丧门",u"贯索",u"官府",u"小耗",u"岁破",u"龙德",u"白虎",u"天德",u"吊客",u"病符"]
+JQXingYao = [u"将星",u"攀鞍",u"岁驿",u"息神",u"华盖",u"劫煞",u"灾煞",u"天煞",u"指背",u"咸池",u"月煞",u"亡神"]
+BSXingYao = [u"博士",u"力士",u"青龙",u"小耗",u"将军",u"奏书",u"飞廉",u"喜神",u"病符",u"大耗",u"伏兵",u"官府"]
+
+ZWMX = [u"平",u"庙",u"庙",u"旺",u"陷",u"旺",u"庙",u"庙",u"旺",u"平",u"闲",u"旺"]
+TJMX = [u"庙",u"陷",u"旺",u"旺",u"庙",u"平",u"庙",u"陷",u"平",u"旺",u"庙",u"平"]
+TYMX = [u"陷",u"陷",u"旺",u"庙",u"旺",u"旺",u"庙",u"平",u"闲",u"闲",u"陷",u"陷"]
+WuQMX = [u"旺",u"庙",u"闲",u"陷",u"庙",u"平",u"旺",u"庙",u"平",u"旺",u"庙",u"平"]
+TTMX = [u"旺",u"陷",u"闲",u"庙",u"平",u"庙",u"陷",u"陷",u"旺",u"平",u"平",u"庙"]
+LZMX = [u"平",u"旺",u"庙",u"闲",u"旺",u"陷",u"平",u"庙",u"庙",u"平",u"旺",u"陷"]
+TFMX = [u"庙",u"庙",u"庙",u"平",u"庙",u"平",u"旺",u"庙",u"平",u"陷",u"庙",u"旺"]
+TYiMX = [u"庙",u"庙",u"闲",u"陷",u"闲",u"陷",u"陷",u"平",u"平",u"旺",u"旺",u"庙"]
+TLMX = [u"旺",u"庙",u"平",u"地",u"庙",u"陷",u"旺",u"庙",u"平",u"平",u"庙",u"陷"]
+JMMX = [u"旺",u"旺",u"庙",u"庙",u"平",u"平",u"旺",u"陷",u"庙",u"庙",u"旺",u"旺"]
+TXaMX = [u"庙",u"庙",u"庙",u"陷",u"旺",u"平",u"旺",u"闲",u"庙",u"陷",u"闲",u"平"]
+TLiMX = [u"庙",u"旺",u"庙",u"庙",u"旺",u"陷",u"庙",u"旺",u"陷",u"地",u"旺",u"陷"]
+QSMX = [u"旺",u"庙",u"庙",u"陷",u"旺",u"平",u"旺",u"旺",u"庙",u"闲",u"庙",u"平"]
+PJMX = [u"庙",u"旺",u"陷",u"旺",u"旺",u"闲",u"庙",u"庙",u"陷",u"陷",u"旺",u"平"]
+ZhengYaoMX = [ZWMX,TFMX,TJMX,TYMX,WuQMX,TTMX,LZMX,TYiMX,TLMX,JMMX,TXaMX,TLiMX,QSMX,PJMX]
+
+TKMX = [u"旺",u"旺",u"",u"庙",u"",u"",u"庙",u"",u"",u"",u"",u"旺"]
+TYueMX = [u"",u"",u"旺",u"",u"",u"旺",u"",u"旺",u"庙",u"庙",u"",u""]
+ZFMX = [u"旺",u"庙",u"庙",u"陷",u"庙",u"平",u"旺",u"庙",u"平",u"陷",u"庙",u"闲"]
+YBMX = [u"庙",u"庙",u"旺",u"陷",u"庙",u"平",u"旺",u"庙",u"闲",u"陷",u"庙",u"平"]
+WCMX = [u"旺",u"庙",u"陷",u"平",u"旺",u"庙",u"陷",u"平",u"旺",u"庙",u"陷",u"旺"]
+WQMX = [u"庙",u"庙",u"平",u"旺",u"庙",u"庙",u"陷",u"旺",u"平",u"庙",u"陷",u"旺"]
+LCMX = [u"旺",u"",u"庙",u"旺",u"",u"庙",u"旺",u"",u"庙",u"旺",u"",u"庙"]
+TMMX = [u"",u"",u"旺",u"",u"",u"平",u"",u"",u"旺",u"",u"",u"平"]
+FuYaoMX=[ZFMX,YBMX,WQMX,WCMX,TKMX,TYueMX,LCMX,TMMX]
+
+HLMX = [u"平",u"庙",u"平",u"陷",u"庙",u"地",u"平",u"庙",u"庙",u"平",u"庙",u"庙"]
+HQMX = [u"闲",u"庙",u"旺",u"旺",u"平",u"平",u"庙",u"旺",u"旺",u"平",u"庙",u"旺"]
+HKMX = [u"旺",u"旺",u"旺",u"庙",u"庙",u"闲",u"庙",u"旺",u"庙",u"平",u"旺",u"旺"]
+HJMX = [u"旺",u"庙",u"陷",u"旺",u"闲",u"陷",u"陷",u"旺",u"陷",u"陷",u"陷",u"陷"]
+HuaYaoMX = [HLMX,HQMX,HKMX,HJMX]
+
+QYMX = [u"陷",u"庙",u"",u"陷",u"庙",u"",u"平",u"庙",u"",u"陷",u"庙",u""]
+TLumx = [u"",u"庙",u"陷",u"",u"庙",u"陷",u"",u"庙",u"陷",u"",u"庙",u"陷"]
+HXMX = [u"平",u"旺",u"庙",u"平",u"闲",u"旺",u"庙",u"闲",u"陷",u"陷",u"庙",u"平"]
+LXMX = [u"陷",u"陷",u"庙",u"庙",u"旺",u"旺",u"庙",u"旺",u"旺",u"陷",u"庙",u"庙"]
+DKMX = [u"平",u"陷",u"陷",u"平",u"陷",u"庙",u"庙",u"平",u"庙",u"庙",u"陷",u"陷"]
+DJMX = [u"陷",u"陷",u"平",u"平",u"陷",u"闲",u"庙",u"平",u"庙",u"平",u"平",u"旺"]
+ShaYaoMX = [HXMX,LXMX,QYMX,TLumx]
+KongYaoMX = [DJMX,DKMX,['']*12]
 
 def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
     print lyear,lmonth,lday,leap,ygindex,yzindex,hzindex
@@ -52,12 +97,13 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
         '命宫逆排安十二宫位支'
         gwzhi[i] = (mgindex-i+12) % 12
         '甲己在寅宫起丙，乙庚在寅宫起戊，丙辛在寅宫起庚，丁壬在寅宫起壬，戊癸在寅宫起甲顺排天干'
-        gwgan[i] = (gwzhi[i]+10+2*ygindex%5) %10
+        gwgan[i] = (gwzhi[i]+2*(ygindex%5)) %10
         if sgindex == gwzhi[i]:
             sgganindex = gwgan[i]
         print GongWei[i],Tiangan[gwgan[i]],Dizhi[gwzhi[i]]
     print gwzhi
     '定五行局'
+    print Tiangan[gwgan[0]]+Dizhi[gwzhi[0]]
     wh = NaYin.get(Tiangan[gwgan[0]]+Dizhi[gwzhi[0]])[2]
     whju =  WhJu[wh]
     whindex = WhJuIndex[wh]
@@ -278,7 +324,7 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
         jshindex,twuindex = 2,2
         tyuindex,yshindex = 11,2
     elif lmonth == 8:
-        djshindex,twuindex = 2,11
+        jshindex,twuindex = 2,11
         tyuindex,yshindex = 7,0
     elif lmonth == 9:
         jshindex,twuindex = 4,5
@@ -299,7 +345,6 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
     eginidex,tguindex = (wcindex + lday-2) % 12,(wqindex + lday-2) % 12
     '命主,身主，流曲流昌'
     '长生十二神'
-    csxingyao = [u"长生",u"沐浴",u"冠带",u"临官",u"帝旺",u"衰",u"病",u"死",u"墓",u"绝",u"胎",u"养",]
     csindex = [-1]*12
     if whindex == 2 or whindex == 5:
         csstart = 8
@@ -318,12 +363,10 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
         for i in range(0,12):
             csindex[i] = (csstart - i)%12
     '太岁十二神'
-    tsxingyao = [u"太岁",u"晦气",u"丧门",u"贯索",u"官府",u"小耗",u"岁破",u"龙德",u"白虎",u"天德",u"吊客",u"病符",]
     tsindex = [-1]*12
     for i in range(0,12):
         tsindex[i] = (yzindex + i) % 12
     '将前十二神'
-    jqxingyao = [u"将星",u"攀鞍",u"岁驿",u"息神",u"华盖",u"劫煞",u"灾煞",u"天煞",u"指背",u"咸池",u"月煞",u"亡神",]
     jqindex = [-1]*12
     if yzindex == 0 or yzindex == 4 or yzindex == 8:  #申子辰
         jqstart = 0
@@ -336,7 +379,6 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
     for i in range(0,12):
         jqindex[i] = (jqstart + i) % 12
     '博士十二神'
-    bsxingyao = [u"博士",u"力士",u"青龙",u"小耗",u"将军",u"奏书",u"飞廉",u"喜神",u"病符",u"大耗",u"伏兵",u"官府",]
     bsindex = [-1]*12
     if shun == 1:
         for i in range(0,12):
@@ -360,16 +402,16 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
     zayao[u"天刑"],zayao[u"天姚"],zayao[u"解神"],zayao[u"天巫"],zayao[u"天月"],zayao[u"阴煞"],zayao[u"三台"],zayao[u"八座"],zayao[u"恩光"],zayao[u"天贵"]=txiindex,tyaindex,jshindex,twuindex,tyuindex,yshindex,stindex,bzindex,eginidex,tguindex
     '长生十二神'
     for i in range(0,12):
-        changsheng12[csxingyao[i]] = csindex[i]
+        changsheng12[CSXingYao[i]] = csindex[i]
     '太岁十二神'
     for i in range(0,12):
-        changsheng12[tsxingyao[i]] = tsindex[i]
+        changsheng12[TSXingYao[i]] = tsindex[i]
     '将前十二神'
     for i in range(0,12):
-        jiangqian12[jqxingyao[i]] = jqindex[i]
+        jiangqian12[JQXingYao[i]] = jqindex[i]
     '博士十二神'
     for i in range(0,12):
-        boshi12[bsxingyao[i]] = bsindex[i]
+        boshi12[BSXingYao[i]] = bsindex[i]
 
     return mgindex,sgindex,whindex,whju,sgganindex,gwgan,gwzhi,zhengyao,fuyao,shayao,huayao,kongyao,zayao,changsheng12,taisui12,jiangqian12,boshi12
 
@@ -387,8 +429,8 @@ def save_paipan(selsql='select id,sex,lyear,lmonth,lday,leap,ygindex,yzindex,hzi
                 ,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d \
                 ,%d,%d,%d,%d,%d)"
                 ,delsql = "delete from xingyao where pid=%d;"
-                ,updxysql = "insert into xingyao(pid,xingyao,type,zhi,zhiindex) values(%d,'%s',%d,'%s',%d)"
-                ,updhxysql = "insert into xingyao(pid,xingyao,huaxingyao,type,zhi,zhiindex) values(%d,'%s','%s',%d,'%s',%d)"):
+                ,updxysql = "insert into xingyao(pid,xingyao,miaoxian,type,zhi,zhiindex) values(%d,'%s','%s',%d,'%s',%d)"
+                ,updhxysql = "insert into xingyao(pid,xingyao,huaxingyao,miaoxian,type,zhi,zhiindex) values(%d,'%s','%s','%s',%d,'%s',%d)"):
     results=sh.ExecQuery(selsql)
     for result in results:
         try:
@@ -402,35 +444,45 @@ def save_paipan(selsql='select id,sex,lyear,lmonth,lday,leap,ygindex,yzindex,hzi
                             ,gwzhi[9],gwgan[10],gwzhi[10],gwgan[11],gwzhi[11])
             sql = delsql % (id);
             sh.ExecNonQuery(sql)
+            i=0
             for k,v in zhengyao.items():
-                sql = updxysql % (id,k,1,Dizhi[v],v);
+                sql = updxysql % (id,k,ZhengYaoMX[i][v],1,Dizhi[v],v);
+                i+=1
                 sh.ExecNonQuery(sql)
+            i=0
             for k,v in fuyao.items():
-                sql = updxysql % (id,k,2,Dizhi[v],v);
+                sql = updxysql % (id,k,FuYaoMX[i][v],2,Dizhi[v],v);
+                i+=1
                 sh.ExecNonQuery(sql)
+            i=0
             for k,v in shayao.items():
-                sql = updxysql % (id,k,3,Dizhi[v],v);
+                sql = updxysql % (id,k,ShaYaoMX[i][v],3,Dizhi[v],v);
+                i+=1
                 sh.ExecNonQuery(sql)
+            i=0
             for k,v in huayao.items():
-                sql = updhxysql % (id,k,v[1],4,Dizhi[v[0]],v[0]);
+                sql = updhxysql % (id,k,v[1],HuaYaoMX[i][v[0]],4,Dizhi[v[0]],v[0]);
+                i+=1
                 sh.ExecNonQuery(sql)
+            i=0
             for k,v in kongyao.items():
-                sql = updxysql % (id,k,5,Dizhi[v],v);
+                sql = updxysql % (id,k,KongYaoMX[i][v],5,Dizhi[v],v);
+                i+=1
                 sh.ExecNonQuery(sql)
             for k,v in zayao.items():
-                sql = updxysql % (id,k,6,Dizhi[v],v);
+                sql = updxysql % (id,k,'',6,Dizhi[v],v);
                 sh.ExecNonQuery(sql)
             for k,v in changsheng12.items():
-                sql = updxysql % (id,k,7,Dizhi[v],v);
+                sql = updxysql % (id,k,'',7,Dizhi[v],v);
                 sh.ExecNonQuery(sql)
             for k,v in taisui12.items():
-                sql = updxysql % (id,k,8,Dizhi[v],v);
+                sql = updxysql % (id,k,'',8,Dizhi[v],v);
                 sh.ExecNonQuery(sql)
             for k,v in jiangqian12.items():
-                sql = updxysql % (id,k,9,Dizhi[v],v);
+                sql = updxysql % (id,k,'',9,Dizhi[v],v);
                 sh.ExecNonQuery(sql)
             for k,v in boshi12.items():
-                sql = updxysql % (id,k,10,Dizhi[v],v);
+                sql = updxysql % (id,k,'',10,Dizhi[v],v);
                 sh.ExecNonQuery(sql)
         except Exception,e:
             print 'error:',e.message,traceback.format_exc()
