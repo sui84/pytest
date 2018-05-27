@@ -12,7 +12,29 @@ import ziweihelper
 mysqldb = setting.YAMLDATA.get('mysqldb2')
 host,user,pwd,db=mysqldb.get('host'),mysqldb.get('user'),mysqldb.get('pwd'),mysqldb.get('bazidb')
 sh=sqlhelper.SqlHelper(host,user,pwd,db,'mysql')
-'八喜楼钞本'
+'''
+八喜楼钞本
+太微赋
+形体赋
+'''
+
+
+def kongwei(zindex,zhengyaos):
+    print zindex,zhengyaos
+    for k,v in zhengyaos.items():
+        if zindex == v:
+            return False
+    return True
+
+def shaji(zindex,xingji,cnt):
+    insfsz = 0
+    for xj in xingji:
+        if xj in sfsz(zindex):
+            insfsz+=1
+    if insfsz>=cnt:
+        return True
+    else:
+        return False
 
 def sfsz(zindex):
     '三方四正'
@@ -34,7 +56,7 @@ def baxl_rule(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
     ygindex,yzindex,hzindex = bz.bazi[0],bz.bazi[1],bz.bazi[7]
     '''
     mgindex,sgindex,whindex,whju,sgganindex,gwgan,gwzhi,zhengyao,fuyao,shayao,huayao,kongyao,zayao,changsheng12,taisui12,jiangqian12,boshi12 =  ziweihelper.paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex)
-    #print bz.print_lunar().decode('utf-8'),mgindex,sgindex
+
 
     result = []
     result += ziwei_rule(sex,ygindex,yzindex,hzindex
@@ -78,7 +100,266 @@ def baxl_rule(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
 
     #for r in result:
     #    print r
+    tw_result = []
+    tw_result += tw_rule(sex,ygindex,yzindex,hzindex
+    ,mgindex,sgindex,whindex,whju,sgganindex,gwgan,gwzhi,zhengyao,fuyao,shayao,huayao,kongyao,zayao,changsheng12,taisui12,jiangqian12,boshi12)
+
+    xt_result = []
+    xt_result += xt_rule(sex,ygindex,yzindex,hzindex
+    ,mgindex,sgindex,whindex,whju,sgganindex,gwgan,gwzhi,zhengyao,fuyao,shayao,huayao,kongyao,zayao,changsheng12,taisui12,jiangqian12,boshi12)
+    return result,tw_result,xt_result
+
+def tw_rule(sex,ygindex,yzindex,hzindex
+    ,mgindex,sgindex,whindex,whju,sgganindex,gwgan,gwzhi,zhengyao,fuyao,shayao,huayao,kongyao,zayao,changsheng12,taisui12,jiangqian12,boshi12):
+    result =[]
+    if mgindex == zhengyao[u"破军"] or mgindex == zhengyao[u"七杀"]:
+        if huayao[u"化忌"][0] in sfsz(mgindex) and huayao[u"化忌"][1]  in (u"廉贞",u"武曲",u"文曲"):
+            result.append (u"七杀破军不喜廉贞化忌，武曲化忌，破军独不喜文曲化忌，若更见煞曜，凶难灾险重重")
+    if (zhengyao[u"太阳"] ==10 and zhengyao[u"太阴"] == 4) or (zhengyao[u"太阳"] ==11 and zhengyao[u"太阴"] == 3):
+            result.append (u"日月反背")
+    if (ygindex == 1 and mgindex == zhengyao[u"天机"] and zhengyao[u"天机"]==11) or (ygindex == 3 and mgindex == 9 and zhengyao[u"天机"]==3) \
+        or (ygindex == 5 and mgindex == zhengyao[u"武曲"] and zhengyao[u"武曲"]==1 and fuyao[u"文曲"]==5) \
+        or (ygindex == 7 and mgindex == 4 and zhengyao[u"巨门"]==4 and fuyao[u"文昌"]==0):
+        result.append (u"禄逢冲破吉成凶")
+    if zayao[u"正空"] ==  fuyao[u"天马"] and fuyao[u"天马"] in sfsz(mgindex):
+        result.append (u"马遇空亡主奔波")
+    wh = ziweihelper.NaYin.get(ziweihelper.Tiangan[gwgan[0]]+ziweihelper.Dizhi[gwzhi[0]])[2]
+    if (wh == u'金' and mgindex ==6 ) or (wh == u'木' and mgindex ==0 ) or (wh == u'水' and mgindex ==9 ) or (wh == u'火' and mgindex ==3 ):
+        result.append (u"生逢败地，发也虚花。须得动曜并且见刑煞")
+    if mgindex == zhengyao[u"贪狼"] and shayao[u"火星"] in sfsz(mgindex) and zhengyao[u"武曲"] in sfsz(mgindex)  and huayao[u"化禄"][1] == u"武曲":
+        result.append (u"火贪格最喜武曲化禄")
+    if mgindex == zhengyao[u"紫薇"] and zhengyao[u"紫薇"] == zhengyao[u"破军"] and xiangjia(zhengyao[u"紫薇"],fuyao[u"左辅"],fuyao[u"右弼"]):
+        result.append (u"辅弼夹帝增加了安定")
+    if mgindex == zhengyao[u"紫薇"] and zhengyao[u"紫薇"] == zhengyao[u"贪狼"] and zayao[u"红鸾"] in sfsz(mgindex) and zayao[u"天喜"] in sfsz(mgindex) \
+            and zayao[u"咸池"] in sfsz(mgindex) and zayao[u"大耗"] in sfsz(mgindex):
+        result.append (u"情欲型的桃花犯主格局，若见文曲文昌更加桃花，再见煞忌，则沦为下流。若见天刑天空截空，为制化")
+    if (mgindex == zhengyao[u"紫薇"] and zhengyao[u"紫薇"] == zhengyao[u"天相"] and fuyao[u"文曲"] in sfsz(mgindex) and fuyao[u"文昌"] in sfsz(mgindex)) \
+        or (mgindex == zhengyao[u"天府"] and zhengyao[u"天府"] == 5) or (mgindex == zhengyao[u"紫薇"] and zhengyao[u"紫薇"] == zhengyao[u"破军"]):
+        result.append (u"君臣庆会,才善经邦:紫相昌曲，同梁协府，辅弼夹帝")
+    if fuyao[u"左辅"] in sfsz(mgindex) and fuyao[u"右弼"] in sfsz(mgindex) and fuyao[u"文曲"] in sfsz(mgindex) and fuyao[u"文昌"] in sfsz(mgindex) \
+        and ((shayao[u"擎羊"] in sfsz(mgindex) and shayao[u"铃星"] in sfsz(mgindex))  or (kongyao[u"地劫"] in sfsz(mgindex) and kongyao[u"地空"] in sfsz(mgindex))):
+        result.append (u"魁钺同行不喜冲破，见羊铃主痼疾，见空劫主不弟")
+    if huayao[u"化禄"][0] in sfsz(mgindex) and huayao[u"化权"][0] in sfsz(mgindex) and huayao[u"化科"][0] in sfsz(mgindex) and fuyao[u"文曲"] in sfsz(mgindex) \
+        and fuyao[u"文昌"] in sfsz(mgindex) and huayao[u"化忌"][0] not in sfsz(mgindex):
+        result.append (u"禄文拱名，利科名")
+    if huayao[u"化禄"][0] in sfsz(mgindex) and huayao[u"化权"][0] in sfsz(mgindex) and huayao[u"化科"][0] in sfsz(mgindex) and fuyao[u"文曲"] in sfsz(mgindex) \
+        and fuyao[u"文昌"] in sfsz(mgindex) and huayao[u"化忌"][0]  in sfsz(mgindex):
+        result.append (u"禄文拱名见忌，才高不遇")
+    if mgindex == zhengyao[u"天府"] and xiangjia(mgindex,zhengyao[u"太阳"],zhengyao[u"太阴"]) and huayao[u"化禄"][1] in (u"天机",u"太阴"):
+        result.append (u"日月夹财，不权则富")
+    if ygindex == 2 and mgindex == 6 and shayao[u"擎羊"] == 6 and zhengyao[u"天同"] == 0:
+        result.append (u"马头带剑，在外地建功立业")
+    if ygindex == 2 and mgindex == 6 and shayao[u"擎羊"] == 6 and zhengyao[u"天同"] == 6:
+        result.append (u"马头带剑反格，白手兴家却未必在外")
+    if ygindex == 4 and mgindex == 6 and shayao[u"擎羊"] == 6 and zhengyao[u"贪狼"] == 6:
+        result.append (u"马头带剑别格，白手兴家却未必在外")
+    if mgindex == zhengyao[u"紫薇"] and zhengyao[u"紫薇"] == zhengyao[u"贪狼"] and huayao[u"化忌"][0] == zhengyao[u"贪狼"] and kongyao[u"地空"] in sfsz(mgindex):
+        result.append (u"桃花犯主意义改变，好哲学或艺术，若见火陀或羊铃，主科名不利")
+    if mgindex == 6 and zhengyao[u"廉贞"] == zhengyao[u"天相"] and ygindex == 3 and zhengyao[u"天相"] == 6:
+        result.append (u"刑忌夹印，每六年有官非")
+    if mgindex == zhengyao[u"天同"] and mgindex in (4,10) and zhengyao[u"天梁"] in (0,6) and zhengyao[u"天机"] == zhengyao[u"太阴"] \
+            and zhengyao[u"天机"] in (2,8):
+        result.append (u"善荫朝纲，善慈之长")
+    if gwzhi[4] in (zhengyao[u"天府"],zhengyao[u"武曲"],zhengyao[u"太阴"]) and (huayao[u"化禄"] in sfsz(mgindex) or fuyao[u"禄存"] in sfsz(mgindex)):
+        result.append (u"财居财位，遇者富奢")
+    if zhengyao[u"太阳"] == 6 and (huayao[u"化禄"] in sfsz(mgindex) or fuyao[u"禄存"] in sfsz(mgindex)) and (fuyao[u"文曲"] in sfsz(mgindex) or fuyao[u"文昌"] in sfsz(mgindex)):
+        result.append (u"日丽中天，重视文曜")
+    if mgindex == zhengyao[u"紫薇"] and  zhengyao[u"紫薇"] ==  zhengyao[u"破军"] and (huayao[u"化禄"] in sfsz(mgindex) or fuyao[u"禄存"] in sfsz(mgindex)):
+        result.append (u"紫薇破军须辅弼，破军最喜化禄")
+    if ygindex in (2,3) and zhengyao[u"太阴"] == 0 and zhengyao[u"天同"]==0 and zhengyao[u"太阴"] in (mgindex,sgindex):
+        result.append (u"若会文昌则是阳梁昌禄格，最怕天虚，火星，大耗，天使等")
+    if fuyao[u"文曲"] == zhengyao[u"破军"]  and zhengyao[u"破军"] in (2,3) and mgindex == zhengyao[u"破军"]:
+        result.append (u"暗耗组合主耗散，见刑煞文曲多惊险反覆，见禄则终有成不致终身辛苦")
+    if mgindex == zhengyao[u"太阴"] and zhengyao[u"太阳"] == zhengyao[u"太阴"]:
+        result.append (u"日月守命不如合照")
+    if mgindex == 7 and zhengyao[u"太阳"] == 3 and zhengyao[u"太阴"] == 11:
+        result.append (u"少年科第")
+    if mgindex == 1 and zhengyao[u"太阳"] == 9 and zhengyao[u"太阴"] == 5:
+        result.append (u"纵有科名亦迟，而且人生较孤，尤主男女感情的痛苦")
+    if mgindex == 7 and zhengyao[u"太阳"] == 11 and zhengyao[u"太阴"] == 3:
+        result.append (u"孤苦多难，日月合照看明暗")
+    if zhengyao[u"天同"] == zhengyao[u"天梁"] and mgindex == zhengyao[u"天梁"]:
+        result.append (u"荫福聚会不怕凶厄。")
+    if zhengyao[u"天同"] == zhengyao[u"天梁"] and mgindex == zhengyao[u"天梁"] and (shayao[u"铃星"] in sfsz(mgindex) or shayao[u"陀罗"] in sfsz(mgindex)):
+        result.append (u"荫福聚会但所遇凶危更大，逢魁钺可减轻凶危。")
+    if zhengyao[u"天同"] == zhengyao[u"天梁"] and mgindex == zhengyao[u"天梁"] and huayao[u"化科"][1] == u"天梁":
+        result.append (u"荫福聚会，天梁化科主声望。")
+    if mgindex == zhengyao[u"贪狼"] and zhengyao[u"贪狼"] == 0 and zhengyao[u"贪狼"] == shayao[u"擎羊"]:
+        result.append (u"泛水桃花，武曲化忌使全盘格局严重的缺点。若有吉曜，亦主艺术。主要指女命")
+    if mgindex == zhengyao[u"贪狼"] and zhengyao[u"贪狼"] == 11 and zhengyao[u"贪狼"] == shayao[u"陀罗"]:
+        result.append (u"泛水桃花，天府无禄婚姻不美。若有吉曜，亦主艺术。主要指女命")
+    if mgindex == zhengyao[u"贪狼"] and zhengyao[u"贪狼"] == 2 and zhengyao[u"贪狼"] == shayao[u"陀罗"] and \
+            (zhengyao[u"贪狼"] == shayao[u"火星"] or zayao[u"天刑"] in sfsz(mgindex)):
+        result.append (u"风流采杖主聪明，因色惹祸.发动之期在大限流年羊陀冲起的年份。主要指男命")
+    if mgindex == zhengyao[u"廉贞"] and zhengyao[u"廉贞"] == zhengyao[u"破军"] and mgindex == 9:
+        result.append (u"若武曲，廉贞皆化为忌星相冲,则血光的意味很重")
+    if mgindex == zhengyao[u"破军"] and mgindex in (11,0,1) and zhengyao[u"破军"] == fuyao[u"文曲"] and huayao[u"化忌"][0] in sfsz(mgindex):
+        result.append (u"破军暗曜共水乡，武曲破军最劣，九死一生")
+    if mgindex == zhengyao[u"贪狼"] and mgindex in (1,7) and zhengyao[u"贪狼"] == fuyao[u"文曲"]:
+        result.append (u"二曲贪狼，若见虚耗阴煞，主自杀倾向")
+    if fuyao[u"禄存"] == gwzhi[7]:
+        result.append (u"禄居奴仆主劳碌")
+    if fuyao[u"文曲"] in sfsz(gwzhi[10]) and fuyao[u"文昌"] in sfsz(gwzhi[10]):
+        result.append (u"昌曲最宜入福德宫，主人聪明，读书上进")
+    if mgindex == zhengyao[u"太阳"] and  zhengyao[u"太阳"] == 3 and fuyao[u"文昌"] in sfsz(mgindex) and fuyao[u"禄存"] in sfsz(mgindex):
+        result.append (u"阳梁昌禄，利功名")
+    if zhengyao[u"太阳"] == 6 and zhengyao[u"太阳"] == gwzhi[8]:
+        result.append (u"太阳文昌会于官禄宫利科名，在午宫容易沦为虚名虚位")
+    if zhengyao[u"太阴"] == gwzhi[2] and zhengyao[u"太阴"] == fuyao[u"文曲"] and ziweihelper.TYiMX[zhengyao[u"太阴"]] == u"庙":
+        result.append (u"太阴文曲会于妻宫，易得岳家提携")
+    if fuyao[u"禄存"] in (gwzhi[4],gwzhi[9]):
+        result.append (u"田宅宫见禄存主家富，财帛宫见禄存主身富，身富不如家富。化禄冲禄始应验")
+    if fuyao[u"禄存"] == gwzhi[4] and zhengyao[u"太阴"] == gwzhi[9] and huayao[u"化禄"][0] == zhengyao[u"太阴"]:
+        result.append (u"财帛宫见禄存有稳定收入，田宅宫最喜太阴化禄")
+    if fuyao[u"禄存"] in sfsz(gwzhi[9]) and  huayao[u"化禄"][0] == zhengyao[u"太阴"] and zhengyao[u"太阴"] in sfsz(gwzhi[9]):
+        result.append (u"田宅宫以太阴化禄叠禄存为佳")
+    if  zhengyao[u"武曲"] == gwzhi[6] and huayao[u"化禄"][0] == zhengyao[u"武曲"] and fuyao[u"天马"] in sfsz(zhengyao[u"武曲"]):
+        result.append (u"武曲禄马交驰，发财远部")
+    if zhengyao[u"天梁"] == gwzhi[6] and zhengyao[u"天梁"] == 0:
+        result.append (u"天梁逢吉曜，本地发财")
+    if zhengyao[u"破军"] == gwzhi[8] and zhengyao[u"破军"] in (0,6) and huayao[u"化忌"][0] == zhengyao[u"廉贞"]:
+        result.append (u"破军守事业宫，逢刑忌，主乞儿")
+    if mgindex == zhengyao[u"贪狼"] and ((yzindex in (2,6,10) and zhengyao[u"贪狼"] == 6) or (yzindex in (1,5,9) and zhengyao[u"贪狼"] == 9) \
+        or (yzindex in (3,7,11) and zhengyao[u"贪狼"] == 3) or (yzindex in (0,4,8) and zhengyao[u"贪狼"] == 0)):
+        result.append (u"贪会旺宫物欲深")
+    if zhengyao[u"贪狼"]  in sfsz(mgindex) and zhengyao[u"破军"]  in sfsz(mgindex) and zhengyao[u"七杀"] in sfsz(mgindex) and zhengyao[u"武曲"] == gwzhi[6]:
+        result.append (u"杀破狼在三方相会且武曲在迁移宫，有不良倾向")
+    if  zhengyao[u"七杀"] == mgindex and changsheng12[u"绝"] == mgindex:
+        result.append (u"杀临绝地见煞刑，主人一生带疾")
+    if zhengyao[u"贪狼"] == changsheng12[u"长生"] and ((yzindex in (2,6,10) and zhengyao[u"贪狼"] == 2) or (yzindex in (1,5,9) and zhengyao[u"贪狼"] == 5) \
+        or (yzindex in (3,7,11) and zhengyao[u"贪狼"] == 11) or (yzindex in (0,4,8) and zhengyao[u"贪狼"] == 8)):
+        result.append (u"贪坐生乡体魄强")
+    xingjis = [shayao[u"火星"],shayao[u"铃星"],shayao[u"擎羊"],shayao[u"陀罗"],huayao[u"化忌"][0]]
+    if shaji(gwzhi[6],xingjis,4)==True:
+        result.append (u"迁移宫凶星会忌，身体遭伤")
+    if shaji(gwzhi[11],xingjis,4)==True:
+        result.append (u"父母宫凶星会忌，刑克父母")
+    if shaji(gwzhi[8],xingjis,3)==True and zhengyao[u"廉贞"] == gwzhi[8]:
+        result.append (u"刑煞会廉于官禄宫主官非，当流年官禄宫重叠，流煞忌重叠即有此克应")
+    if kongwei(mgindex,zhengyao) == True and zhengyao[u"天机"] in sfsz(mgindex) and zhengyao[u"天同"] in sfsz(mgindex):
+        result.append (u"善福守于空位，出家命")
+    if kongwei(mgindex,zhengyao) and fuyao[u"左辅"] <> fuyao[u"右弼"] and mgindex in ( fuyao[u"左辅"],fuyao[u"右弼"]):
+        result.append (u"辅弼单坐命，离宗庶出")
+    if kongwei(mgindex,zhengyao) and shayao[u"火星"] <> shayao[u"铃星"] and mgindex in ( shayao[u"火星"],shayao[u"铃星"]):
+        result.append (u"火铃单守命，两重父母")
+    if zhengyao[u"七杀"] in (mgindex,sgindex):
+        result.append (u"七杀临于身命，流年太岁刑忌并临，必主灾病官非")
+    if huayao[u"化忌"][0] in sfsz(mgindex) and (mgindex == shayao[u"铃星"] and mgindex == shayao[u"擎羊"]) or (mgindex == shayao[u"陀罗"] and mgindex == shayao[u"火星"]):
+        nianzhi = ziweihelper.Dizhi[(mgindex+8) % 12]
+        result.append (u"命宫坐羊铃或陀火,又会刑忌,流年遇白虎须当刑戮."+nianzhi+u"年")
     return result
+
+
+def xt_rule(sex,ygindex,yzindex,hzindex
+    ,mgindex,sgindex,whindex,whju,sgganindex,gwgan,gwzhi,zhengyao,fuyao,shayao,huayao,kongyao,zayao,changsheng12,taisui12,jiangqian12,boshi12):
+    result =[]
+    xingjis = [shayao[u"火星"],shayao[u"铃星"],shayao[u"擎羊"],shayao[u"陀罗"],huayao[u"化忌"][0]]
+    if mgindex == zhengyao[u"紫薇"]:
+        result.append (u"紫薇帝座，生为厚重之容")
+        if mgindex == zhengyao[u"破军"] and shaji(mgindex,xingjis,3)==True:
+            result.append (u"紫破，煞忌并见，主眼神游移不定")
+        if mgindex == zhengyao[u"贪狼"]:
+            result.append (u"紫贪，脸形带扁")
+        if mgindex == zhengyao[u"七杀"]:
+            result.append (u"紫杀，脸形带方，地阁额方")
+        if mgindex == zhengyao[u"天府"]:
+            result.append (u"紫府，脸形带扁面，或比紫杀更方")
+        if fuyao[u"左辅"] in sfsz(mgindex) and fuyao[u"右弼"] in sfsz(mgindex):
+            result.append (u"紫薇见辅弼，主观强而主见少，相貌必丰厚大方，双目慈和")
+    if mgindex == zhengyao[u"天府"]:
+        result.append (u"天府主方脸，多微胖或年老发胖。女命鼻多胆形")
+        if huayao[u"化禄"] not in sfsz(mgindex) and  fuyao[u"禄存"] not in sfsz(mgindex) and shaji(mgindex,xingjis,3)==True:
+            result.append (u"天府若无禄而刑煞重者，主瘦")
+        if mgindex <> zhengyao[u"廉贞"]:
+            result.append (u"天府与廉贞同度皮肤黄白")
+        if mgindex == zhengyao[u"廉贞"]:
+            result.append (u"天府皮肤粗黑")
+    if mgindex == zhengyao[u"太阳"]:
+        result.append (u"太阳面色红黄，红白，或带紫红")
+        if ziweihelper.TYMX[mgindex] == u"庙":
+            result.append (u"太阳入庙者圆脸")
+        if ziweihelper.TYMX[mgindex] ==  u"陷":
+            result.append (u"太阳落陷者带尖长")
+        if zhengyao[u"太阳"] == huayao[u"化忌"][0]:
+            result.append (u"太阳化忌主有眼疾,若见煞则双目一大一小或一高一低")
+    if mgindex == zhengyao[u"太阴"]:
+        result.append (u"太阴清奇，面色青白或青黄")
+        if ziweihelper.TYiMX[mgindex] == u"庙":
+            result.append (u"太阴入庙者圆而清秀")
+        if ziweihelper.TYiMX[mgindex] ==  u"陷":
+            result.append (u"太阴落陷者带尖薄")
+        if ziweihelper.TYiMX[mgindex] ==  u"陷" and shaji(mgindex,xingjis,3)==True:
+            result.append (u"太阴落陷见煞忌，色带青黑")
+        if mgindex == zhengyao[u"天同"] and shaji(mgindex,xingjis,2)==True:
+            result.append (u"天同太阴见煞，主鼻梁塌")
+        if mgindex == zhengyao[u"天机"] and shaji(mgindex,xingjis,2)==True:
+            result.append (u"太阴天机见煞忌，主双目高低大小")
+    if mgindex == zhengyao[u"天机"]:
+        result.append (u"天机面型长而带瘦，面色青白转为青黄")
+        if ziweihelper.TJMX[mgindex] == u"庙":
+            result.append (u"太机入庙者身长肥胖")
+        if mgindex == zhengyao[u"巨门"]:
+            result.append (u"天机巨门主瘦,目光浮泛")
+        if mgindex == zhengyao[u"太阴"]:
+            result.append (u"天机太阴,目光灵动")
+        if mgindex == zhengyao[u"太梁"]:
+            result.append (u"天机天梁,目光沉潜")
+    if mgindex == zhengyao[u"武曲"]:
+        result.append (u"武曲面型长圆，多带瘦。性果敢勇毅，有决断力")
+        if mgindex == 3:
+            result.append (u"武曲卯主体态肥胖")
+        if mgindex in (5,10):
+            result.append (u"武曲辰戌主身形瘦长")
+    if mgindex == zhengyao[u"天同"]:
+        result.append (u"天同圆方脸，面色黄白，或带微红。体态丰满，眼神仁慈")
+        if mgindex == zhengyao[u"巨门"] and shayao[u"火星"]  in sfsz(mgindex) and shayao[u"铃星"]  in sfsz(mgindex):
+            result.append (u"天同巨门同度，会火铃，主有异痣或胎记")
+        if mgindex == zhengyao[u"太阴"] and mgindex ==0:
+            result.append (u"女命天同太阴于子宫同度，眼神流丽")
+    if mgindex == zhengyao[u"廉贞"]:
+        result.append (u"廉贞眉宽，面横口阔.廉贞主露，眉露骨，颧露棱")
+        if mgindex == zhengyao[u"天府"]:
+            result.append (u"廉贞天府同度，脸色，肤色皆粗黑")
+    if mgindex == zhengyao[u"贪狼"]:
+        if ziweihelper.TLMX[zhengyao[u"贪狼"]] == u"庙":
+            result.append (u"贪狼入庙则身躯肥满高大")
+        if ziweihelper.TLMX[zhengyao[u"贪狼"]] == u"陷":
+            result.append (u"贪狼落陷则形反主小")
+        if ziweihelper.TLMX[zhengyao[u"贪狼"]] == u"陷" and shayao[u"擎羊"] in sfsz(mgindex) and shayao[u"陀罗"] in sfsz(mgindex) and huayao[u"化忌"][0] in sfsz(mgindex):
+            result.append (u"贪狼落陷见羊陀又化忌，主面有疤痕，或有斑痣")
+        if mgindex == fuyao[u"天马"]:
+            result.append (u"贪狼天马善则擅长交际，恶则言语无实")
+    if mgindex == zhengyao[u"巨门"]:
+        result.append (u"巨门面型方长")
+        if zhengyao[u"太阳"] in sfsz(mgindex) and ziweihelper.TYMX[zhengyao[u"太阳"]] == u"庙":
+            result.append (u"巨门与入庙的太阳同度或会照，面色红黄")
+        if zhengyao[u"太阳"] in sfsz(mgindex) and zhengyao[u"太阳"] in (5,6):
+            result.append (u"巨门与巳午的太阳相会时，始主肥胖")
+        if zhengyao[u"太阳"] in sfsz(mgindex):
+            result.append (u"巨门会太阳，体毛多长")
+    if mgindex == zhengyao[u"天相"]:
+        result.append (u"天相面型方脸或微带圆，一般中等身材，中年后易转为肥胖")
+        if gwzhi[6] in (zhengyao[u"廉贞"],zhengyao[u"破军"]):
+            result.append (u"天相与廉贞破军相对，主暗破相")
+    if mgindex == zhengyao[u"天梁"]:
+        if mgindex == 6:
+            result.append (u"天梁午宫主矮胖，眼光峻利逼人")
+        if mgindex == 5:
+            result.append (u"天梁巳宫则中年后始发胖，及主身长")
+        if mgindex == zhengyao[u"天机"]:
+            result.append (u"天梁与天机同度，擅长词令")
+    if mgindex == zhengyao[u"七杀"]:
+        result.append (u"七杀面型长方，带瘦者居多,化禄也可丰满")
+    if mgindex == zhengyao[u"七杀"] and ziweihelper.QSMX[zhengyao[u"七杀"]] == u"陷" and shaji(mgindex,xingjis,3)==True:
+        result.append (u"七杀落陷见刑忌,目露凶光")
+    if mgindex == shayao[u"擎羊"]:
+        result.append (u"女性相貌见擎羊才抢眼")
+    if mgindex == shayao[u"陀罗"]:
+        result.append (u"陀罗主牙齿不齐")
+    if mgindex == zhengyao[u"破军"]:
+        result.append (u"破军主人背厚眉宽，行坐腰斜,或破相，或口吃，或产时难产")
+    return result
+
 
 def ziwei_rule(sex,ygindex,yzindex,hzindex
     ,mgindex,sgindex,whindex,whju,sgganindex,gwgan,gwzhi,zhengyao,fuyao,shayao,huayao,kongyao,zayao,changsheng12,taisui12,jiangqian12,boshi12):
@@ -335,7 +616,7 @@ def lianzheng_rule(sex,ygindex,yzindex,hzindex
             result.append (u"廉贞入庙会将军，仲由威勐。 （见图12）（注）仅指廉贞独守申宫。仲由为孔门七十二贤之一，贤而能文复威勐。（见卷二）")
         #廉贞四煞遭刑戮。
         #（注）化忌，或见武曲化忌始是。
-        if changsheng12[u"白虎"] == zhengyao[u"廉贞"]:
+        if taisui12[u"白虎"] == zhengyao[u"廉贞"]:
             result.append (u"廉贞白虎，刑杖难逃。 （注）原局廉虎同宫，流年白虎又到，且见流煞。")
     if zhengyao[u"廉贞"] in sfsz(gwzhi[6]) and zhengyao[u"破军"] in sfsz(gwzhi[6]) and zhengyao[u"七杀"] in sfsz(gwzhi[6]) and (shayao[u"火星"]  in sfsz(gwzhi[6]) or \
            shayao[u"铃星"]  in sfsz(gwzhi[6]) or shayao[u"擎羊"]   in sfsz(gwzhi[6]) or shayao[u"陀罗"]  in sfsz(gwzhi[6]) or  huayao[u"化忌"][0] in sfsz(gwzhi[6])):
@@ -921,7 +1202,7 @@ def shayao_rule(sex,ygindex,yzindex,hzindex
 （注）四星交会辰戌，若化忌者是。（见卷二第135页）
 '''
 
-def save_zwrule(selsql='select id,sex,lyear,lmonth,lday,leap,ygindex,yzindex,hzindex from mingzhu'
+def save_zwrule(selsql='select id,sex,lyear,lmonth,lday,leap,ygindex,yzindex,hzindex from mingzhu '
                 ,delsql="delete from zwrule where pid=%d;"
                 ,updsql = "insert into zwrule(pid,ruletype,rule) \
                 values(%d,'%s','%s')"):
@@ -931,11 +1212,19 @@ def save_zwrule(selsql='select id,sex,lyear,lmonth,lday,leap,ygindex,yzindex,hzi
             id,sex,lyear,lmonth,lday,leap,ygindex,yzindex,hzindex=result[0],result[1],result[2],result[3],result[4],result[5],result[6],result[7],result[8]
             sql = delsql % (id);
             sh.ExecNonQuery(sql)
-            rules = baxl_rule(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex)
+            bx_result,tw_result,xt_result = baxl_rule(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex)
             sqls = []
-            if rules <> None:
-                for r in rules:
+            if bx_result <> None:
+                for r in bx_result:
                     sqls.append(updsql % (id,u"八喜楼",r))
+                sh.ExecNonQuery(';'.join(sqls))
+            if tw_result <> None:
+                for r in tw_result:
+                    sqls.append(updsql % (id,u"太微赋",r))
+                sh.ExecNonQuery(';'.join(sqls))
+            if xt_result <> None:
+                for r in xt_result:
+                    sqls.append(updsql % (id,u"形体赋",r))
                 sh.ExecNonQuery(';'.join(sqls))
 
         except Exception,e:

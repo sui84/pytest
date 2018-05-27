@@ -103,10 +103,10 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
         print GongWei[i],Tiangan[gwgan[i]],Dizhi[gwzhi[i]]
     print gwzhi
     '定五行局'
-    print Tiangan[gwgan[0]]+Dizhi[gwzhi[0]]
     wh = NaYin.get(Tiangan[gwgan[0]]+Dizhi[gwzhi[0]])[2]
     whju =  WhJu[wh]
     whindex = WhJuIndex[wh]
+    print Tiangan[gwgan[0]]+Dizhi[gwzhi[0]],wh,whju
     '起大限'
     dxfrom = [-1]*12
     dxto = [-1]*12
@@ -128,7 +128,7 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
     elif (wh == u"火" and yu == 5) or (wh == u"土" and yu == 4) or (wh == u"金" and yu == 3) or (wh == u"木" and yu == 2) or (wh == u"水" and yu == 1):
         zwindex = (1 + shang)% 12  #丑
     elif yu == 0:
-        zwindex = (2 + shang)% 12  #寅
+        zwindex = (1 + shang)% 12  #寅
     '起天府星'
     if zwindex < 5 :
         tfindex = 4 - zwindex
@@ -394,6 +394,25 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
     shayao[u"火星"],shayao[u"铃星"],shayao[u"擎羊"],shayao[u"陀罗"]=hxindex,lxindex,qyindex,tluindex
     huayao[u"化禄"],huayao[u"化权"],huayao[u"化科"],huayao[u"化忌"]=(snhlindex,snhl),(snhqindex,snhq),(snhkindex,snhk),(snhjindex,snhj)
     kongyao[u"地劫"],kongyao[u"地空"],kongyao[u"天空"]=djindex,dkindex,tkoindex
+    for k,v in fuyao.items():
+        print k,Dizhi[v]
+    for k,v in shayao.items():
+        print k,Dizhi[v]
+    for k,v in huayao.items():
+        print k,Dizhi[v[0]],v[1]
+    for k,v in kongyao.items():
+        print k,Dizhi[v]
+    for k,v in zayao.items():
+        print k,Dizhi[v]
+    for k,v in changsheng12.items():
+        print k,Dizhi[v]
+    for k,v in taisui12.items():
+        print k,Dizhi[v]
+    for k,v in jiangqian12.items():
+        print k,Dizhi[v]
+    for k,v in boshi12.items():
+        print k,Dizhi[v]
+
     '杂曜'
     zayao[u"天官"],zayao[u"天福"],zayao[u"天厨"],zayao[u"正空"],zayao[u"傍空"],zayao[u"劫煞"]=tgindex,tfuindex,tcindex,zkindex,bkindex,jsindex
     zayao[u"华盖"],zayao[u"咸池"],zayao[u"天哭"],zayao[u"天虚"],zayao[u"红鸾"],zayao[u"天喜"]=hzindex,xcindex,tkuindex,txuindex,hlindex,txindex
@@ -405,7 +424,7 @@ def paipan(lyear,lmonth,lday,leap,ygindex,yzindex,hzindex,sex):
         changsheng12[CSXingYao[i]] = csindex[i]
     '太岁十二神'
     for i in range(0,12):
-        changsheng12[TSXingYao[i]] = tsindex[i]
+        taisui12[TSXingYao[i]] = tsindex[i]
     '将前十二神'
     for i in range(0,12):
         jiangqian12[JQXingYao[i]] = jqindex[i]
