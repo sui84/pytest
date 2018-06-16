@@ -54,7 +54,7 @@ def elapsedtimedeco(arg=True):
                 func(*args,**kwargs)
                 endTime = time.time()
                 msecs = (endTime - startTime) * 1000
-                print "->elapsed time: %f ms" % msecs
+                print "%s -> elapsed time: %.2f ms %.2f sec %.2f min" % (func.__name__,msecs,msecs/1000.0,msecs/(60*1000.0))
             return wrapper
     else:
         def _deco(func):

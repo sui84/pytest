@@ -1,18 +1,20 @@
 #encoding=utf-8
-import threadhelper
-import commonhelper
+import utils.threadhelper
+import utils.commonhelper
 #from multiprocessing.dummy import Pool
 from multiprocessing import Pool
 from itertools import product
-import timehelper
+import utils.timehelper
 import traceback
-import fhelper
+import utils.fhelper
 import pandas as pd
-import strhelper
+import utils.strhelper
 import sys
 import os
 sys.setdefaultencoding('utf-8')
 '''
+多线程删除文件相同行(40G->37G) MultiProcessDropDuplicateLine
+多线程在文件中搜索字符串，先取出全部内容，如果存在再逐行匹配，效率很慢 WrapperSearchInFile
 从目录DIR_PATH所有文件中查找STR_FILE里的字符串，结果存入OUT_FILE
 '''
 
@@ -43,13 +45,13 @@ def SearchFile(fname,strs):
         print 'Error:',e.message,'\n',traceback.format_exc()
 
 
-@timehelper.elapsedtimedeco(True)
+@utils.timehelper.elapsedtimedeco(True)
 def MultiProcess(strs=None):
     pool = Pool(PNUM)
-    files = commonhelper.GetDirFiles(DIR_PATH)
+    files = utils.commonhelper.GetDirFiles(DIR_PATH)
     args=[]
     if strs==None:
-        strs = fhelper.FHelper(STR_FILE).GetAllLinesWithoutEnter()
+        strs = utils.fhelper.FHelper(STR_FILE).GetAllLinesWithoutEnter()
     for file in files:
         args.append((file,strs))
     pool.map(WrapperSearchInFile,args)
@@ -62,7 +64,7 @@ def DropDuplicateLine(ipath):
     #opath = strhelper.StrHelper().ConvertToUnicode(opath)
     opath = ipath.replace(r'D:\DB\txt',r'D:\DB\txt2')
     print ipath,'->',opath
-    lines = fhelper.FHelper(ipath).GetAllLinesWithoutEnter()
+    lines = utils.fhelper.FHelper(ipath).GetAllLinesWithoutEnter()
     df=pd.DataFrame({"line":lines})
     result = df.drop_duplicates()
     nlines = result.line.tolist()
@@ -75,10 +77,10 @@ def DropDuplicateLine(ipath):
     with open(opath,'w') as f:
         f.writelines(newlines)
 
-@timehelper.elapsedtimedeco(True)
+@utils.timehelper.elapsedtimedeco(True)
 def MultiProcessDropDuplicateLine():
     pool = Pool(PNUM)
-    files = commonhelper.GetDirFiles(DIR_PATH)
+    files = utils.commonhelper.GetDirFiles(DIR_PATH)
     pool.map(DropDuplicateLine,files)
 
 
