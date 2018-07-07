@@ -55,9 +55,6 @@ class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
          self.end_headers()
          self.wfile.write(message)
 
-def test_app():
-    httpd = BaseHTTPServer.HTTPServer(('0.0.0.0',PORT), WebRequestHandler)
-
 if __name__ == '__main__':
     # socket.error: [Errno 125] Address already in use ??
     try:
