@@ -5,6 +5,7 @@ sys.setdefaultencoding('utf-8')
 sys.path.append('..')
 import os
 import time
+import traceback
 '''
 移动小于180M文件到另一个目录 dir_fmove
 删除空目录 dir_files -> delete_gap_dir
@@ -42,10 +43,16 @@ def dir_dirs(idir,ofile):
 def dir_files(idir,ofile=None):
     files=[]
     for fpathe,dirs,fs in os.walk(idir):
-      for f in fs:
-        fpath = os.path.join(fpathe,f)
-        size = os.path.getsize(fpath)
-        files.append((fpath,size))
+        try:
+            for f in fs:
+                try:
+                    fpath = os.path.join(fpathe,f)
+                    size = os.path.getsize(fpath)
+                    files.append((fpath,size))
+                except Exception,e:
+                    print 'Error:',e.message,'\n',traceback.format_exc()
+        except Exception,e:
+            print 'Error:',e.message,'\n',traceback.format_exc()
     #fpath=[x[0] for x in files]
     files = sorted(files, key=lambda x: x[1])
     fstr = ''

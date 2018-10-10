@@ -335,6 +335,33 @@ def convertFolderImg(idir, itype, otype):
     t.join()
     index += 1
 
+def transPNG(ifile,ofile):
+    img = Image.open(ifile)
+    img = img.convert("RGBA")
+    datas = img.getdata()
+    newData = list()
+    for item in datas:
+        print item[0],item[1],item[2]
+        if item[0] >220 and item[1] > 220 and item[2] > 220:
+            newData.append(( 255, 255, 255, 0))
+        else:
+            newData.append(item)
+    
+    img.putdata(newData)
+    img.save(ofile,"PNG")
+
+def WhitePNG(ifile,ofile):
+    im = Image.open(ifile)
+    x,y = im.size 
+    try: 
+      # 使用白色来填充背景 from：www.jb51.net
+      # (alpha band as paste mask). 
+      p = Image.new('RGBA', im.size, (255,255,255))
+      p.paste(im, (0, 0, x, y), im)
+      p.save(ofile)
+    except:
+      pass
+
 if __name__ == "__main__":
     #trans_parency(r'd:\temp\zj.jpg',r'd:\temp\zj3.png',factor=0.9)
     #trans_bg(r'd:\temp\zj.jpg',r'd:\temp\zj.png')

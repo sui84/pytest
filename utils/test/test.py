@@ -1,15 +1,20 @@
-#$ nosetests -s
-# setUp -> Testfunc1 -> Testfunc2 -> tearDown
-def setUp():
-    print "function setup"
+from locust import HttpLocust,TaskSet,task
 
-def tearDown():
-    print "function teardown"
+class User1Tasks(TaskSet):
+    def on_start(self):
+    	print 'do on_start.......'
+    	
+    @task(1)
+    def index1(self):
+    	r=self.client.get('/test/index.html')
+        print r.text
+    @task(2)
+    def search1(self):
+        r=self.client.get('/test/index.html')
+        print r.text
 
-def Testfunc1():
-    print "Testfunc1"
-    assert True
-
-def Testfunc2():
-    print "Testfunc2"
-    assert True
+class User1(HttpLocust):
+    task_set = User1Tasks
+    min_wait = 5000
+    max_wait = 9000
+    weight = 2
