@@ -17,10 +17,8 @@ class ConfHelper(object):
                 confs[option] = self.config.get(section,option)
         return confs
     def ShowAllConfig(self):
-        print self.config.sections()
         confs = {}
         for section in self.config.sections():
-            print section
             for option in self.config.options(section):
                 confs[option] = self.config.get(section,option)
                 print " ",option,"=",self.config.get(section,option)

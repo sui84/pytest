@@ -109,7 +109,7 @@ def nginx_log(logdir):
     # restart nginx
     # /mnt/sda1/opkg/etc/init.d/nginx restart
     # write nginx.log to sql server
-    # logparser -i:CSV -iHeaderFile:"D:\TEMP\nginx.header" -headerRow:OFF -o:SQL  "SELECT * into Nginx from D:\TEMP\nginx20180120221100.log" -server:localhost\SQLEXPRESS -database:log -driver:"SQL Server" -username:sa -password:P@ssw0rd -createTable:OFF
+    # logparser -i:CSV -iHeaderFile:"D:\TEMP\nginx.header" -headerRow:OFF -o:SQL  "SELECT * into Nginx from D:\TEMP\nginx20180120221100.log" -server:localhost\SQLEXPRESS -database:log -driver:"SQL Server" -username:sa -password: -createTable:OFF
     from utils import cmdhelper
     '''
     host,user,pwd,smbdir,srcf,dstf = smbserver.get('host'),smbserver.get('user'),smbserver.get('pwd'),smbserver.get('smbdir'),smbserver.get('srcf'),smbserver.get('dstf')
